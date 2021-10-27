@@ -1,65 +1,83 @@
 <template>
-  <div className="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank"
-             rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank"
-             rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a>
-      </li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
-  <div id="example-2">
-    <!-- `greet` is the name of a method defined below -->
-    <button v-on:click="greet">Greet</button>
-  </div>
+  <a-layout style="min-height: 100vh">
+    <a-layout-sider v-model:collapsed="collapsed" collapsible>
+      <div class="logo" />
+      <a-menu theme="dark" v-model:selectedKeys="selectedKeys" mode="inline">
+        <a-button type="text" key="1" href="http://localhost:3000/" block>
+          <HomeOutlined />
+          <span>
+            Общая информация
+          </span>
+        </a-button>
+        <a-button type="text" key="1" href="http://localhost:3000/" block>
+          <TeamOutlined />
+          <span>
+            Наши врачи
+          </span>
+        </a-button>
+        <a-button type="text" key="1" href="http://localhost:3000/" block>
+          <CalendarOutlined />
+          <span>
+            Запись на прием
+          </span>
+        </a-button>
+      </a-menu>
+    </a-layout-sider>
+    <a-layout>
+      <a-layout-header style="background: #fff; padding: 0" />
+      <a-layout-content style="margin: 0 16px">
+        <a-breadcrumb style="margin: 16px 0">
+          <a-breadcrumb-item>Пользователь</a-breadcrumb-item>
+          <a-breadcrumb-item>Баранов Денис</a-breadcrumb-item>
+        </a-breadcrumb>
+        <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
+          Общая информация
+        </div>
+      </a-layout-content>
+      <a-layout-footer style="text-align: center">
+         Психодиспансер для особо-опасных, 2021
+      </a-layout-footer>
+    </a-layout>
+  </a-layout>
 </template>
-
 <script>
-import axios from 'axios';
-
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+import {
+  HomeOutlined,
+  TeamOutlined,
+  CalendarOutlined,
+} from '@ant-design/icons-vue';
+import { defineComponent, ref } from 'vue';
+export default defineComponent({
+  components: {
+    HomeOutlined,
+    TeamOutlined,
+    CalendarOutlined,
   },
-  methods: {
-    greet: function (event) {
-      // `this` inside methods points to the Vue instance
-      event
-      // `event` is the native DOM event
-      axios.get('http://localhost:8081/test')
-          .then(response => {
-            // JSON responses are automatically parsed.
-            this.posts = response.data
-            console.log(this.posts)
-          })
-    }
-  }
-}
+
+  data() {
+    return {
+      collapsed: ref(false),
+      selectedKeys: ref(['1']),
+    };
+  },
+});
 </script>
+<style>
+#components-layout-demo-side .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+[data-theme='dark'] .site-layout .site-layout-background {
+  background: #141414;
+}
+</style>
+
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
