@@ -64,7 +64,7 @@ export default defineComponent({
 </script>
 <style>
 #components-layout-demo-side .logo {
-  height: 32px;
+  height: 16px;
   margin: 16px;
   background: rgba(255, 255, 255, 0.3);
 }
@@ -82,7 +82,7 @@ export default defineComponent({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
-  margin: 40px 0 0;
+  margin: 0px 0 0;
 }
 
 ul {
