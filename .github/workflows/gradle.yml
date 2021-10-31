@@ -6,7 +6,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -16,12 +15,13 @@ jobs:
         run: npm install
       - name: Installing axios
         run: npm install --save axios
-      - name: Building the project  
+      - name: Building the project
         run: npm run build
       - name: Docker image build and push
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
           image: reshatsultan/hospital-frontend
+          tags: latest
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
