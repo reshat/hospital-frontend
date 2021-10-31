@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   FRE:
-    image: reshatsultan/hospital-frontend:main-31565aa
+    image: reshatsultan/hospital-frontend:main-31fc5b3
     ports:
       - "3005:8080"
   API:
