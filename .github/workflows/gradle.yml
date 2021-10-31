@@ -14,6 +14,8 @@ jobs:
       - uses: actions/setup-node@master
       - name: Installing project dependencies
         run: npm install
+      - name: Installing axios
+        run: npm install --save axios
       - name: Building the project  
         run: npm run build
       - name: Docker image build and push
