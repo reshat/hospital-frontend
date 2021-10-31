@@ -5,7 +5,7 @@ services:
     ports:
       - "3005:8080"
   API:
-    image: reshatsultan/hospital:main-cf80b4b
+    image: reshatsultan/hospital:main-81ebe2d
     ports:
       - "8080:8080"
     environment:
