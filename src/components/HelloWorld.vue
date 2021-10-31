@@ -56,6 +56,7 @@ export default {
             this.posts = response.data
             console.log(this.posts)
           })
+
     }
   }
 }
