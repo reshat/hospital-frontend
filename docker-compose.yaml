@@ -1,11 +1,11 @@
 version: '3.1'
 services:
   FRE:
-    image: reshatsultan/hospital-frontend:main-31fc5b3
+    image: reshatsultan/hospital-frontend:main-22ed10f
     ports:
       - "3005:8080"
   API:
-    image: reshatsultan/hospital:main-81ebe2d
+    image: reshatsultan/hospital:main-31fc5b3
     ports:
       - "8080:8080"
     environment:
