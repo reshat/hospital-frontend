@@ -50,7 +50,7 @@ export default {
       // `this` inside methods points to the Vue instance
       event
       // `event` is the native DOM event
-      axios.get('http://localhost:8081/test')
+      axios.get('http://localhost:8080/test')
           .then(response => {
             // JSON responses are automatically parsed.
             this.posts = response.data
