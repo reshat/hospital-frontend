@@ -18,14 +18,13 @@
       </a-menu>
     </a-layout-sider>
     <a-layout>
-      <a-layout-header style="background: #fff; padding: 0" />
+      <a-layout-header style="background: #fff; padding: 0" >  </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item>Пользователь</a-breadcrumb-item>
-          <a-breadcrumb-item>Баранов Денис</a-breadcrumb-item>
+          <a-breadcrumb-item style="font-size: large; font-weight:bold"> {{info.header}}</a-breadcrumb-item>
         </a-breadcrumb>
         <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
-          Общая информация
+          {{info.text}}
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -41,7 +40,11 @@ import {
   TeamOutlined,
   CalendarOutlined,
 } from '@ant-design/icons-vue';
+
 import { defineComponent, ref } from 'vue';
+import axios from 'axios';
+
+
 export default defineComponent({
   components: {
     HomeOutlined,
@@ -53,8 +56,21 @@ export default defineComponent({
     return {
       collapsed: ref(false),
       selectedKeys: ref(['1']),
+      info: []
     };
   },
+  mounted() {
+    axios
+        .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/general')
+        .then(response => {
+          this.info = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.errored = true;
+        })
+        .finally(() => (this.loading = false));
+  }
 });
 </script>
 <style>
