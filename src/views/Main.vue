@@ -46,21 +46,20 @@
       </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify"> {{info.header}}</a-breadcrumb-item>
+          <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> {{info.header}}</a-breadcrumb-item>
         </a-breadcrumb>
         <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
           <span>  {{info.text}} </span>
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
-        Психодиспансер для особо-опасных, 2021
+        Санкт-Петербург, 2021
       </a-layout-footer>
     </a-layout>
   </a-layout>
 </template>
 
 <script>
-
 import {
   HomeOutlined,
   TeamOutlined,
@@ -70,17 +69,14 @@ import {
 import { SearchOutlined } from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
 import axios from 'axios';
-
-
 export default defineComponent({
   components: {
     HomeOutlined,
     TeamOutlined,
     CalendarOutlined,
-        SearchOutlined,
+    SearchOutlined,
     UserOutlined,
   },
-
   data() {
     return {
       collapsed: ref(false),
@@ -115,7 +111,6 @@ export default defineComponent({
   margin: 16px;
   background: rgba(255, 255, 255, 255.3);
 }
-
 .site-layout .site-layout-background {
   background: #fff;
 }
@@ -126,20 +121,16 @@ export default defineComponent({
   color: #666;
   font-weight: bold;
 }
-
 .certain-category-search-dropdown .ant-select-dropdown-menu-item-group {
   border-bottom: 1px solid #f6f6f6;
 }
-
 .certain-category-search-dropdown .ant-select-dropdown-menu-item {
   padding-left: 16px;
 }
-
 .certain-category-search-dropdown .ant-select-dropdown-menu-item.show-all {
   text-align: center;
   cursor: default;
 }
-
 .certain-category-search-dropdown .ant-select-dropdown-menu {
   max-height: 300px;
 }
@@ -152,26 +143,23 @@ export default defineComponent({
 h3 {
   margin: 0px 0 0;
 }
-
 ul {
   list-style-type: none;
   padding: 0;
 }
-
 li {
   display: inline-block;
   margin: 0 10px;
 }
-
 a {
   color: black;
 }
- .certain-category-search-wrapper
- :deep(.certain-category-search.ant-select-auto-complete)
- .ant-input-affix-wrapper
- .ant-input-suffix {
-   right: 12px;
- }
+.certain-category-search-wrapper
+:deep(.certain-category-search.ant-select-auto-complete)
+.ant-input-affix-wrapper
+.ant-input-suffix {
+  right: 12px;
+}
 .certain-category-search-wrapper :deep(.certain-search-item-count) {
   position: absolute;
   color: #999;
@@ -188,4 +176,3 @@ a {
   font-size: 16px;
 }
 </style>
-

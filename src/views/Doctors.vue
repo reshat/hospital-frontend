@@ -64,7 +64,7 @@
       </div>
   </a-layout-content>
   <a-layout-footer style="text-align: center">
-    Психодиспансер для особо-опасных, 2021
+    Санкт-Петербург, 2021
   </a-layout-footer>
 </a-layout>
 </a-layout>
