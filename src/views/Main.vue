@@ -46,7 +46,7 @@
       </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> {{info.header}}</a-breadcrumb-item>
+          <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify"> {{info.header}}</a-breadcrumb-item>
         </a-breadcrumb>
         <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
           <span>  {{info.text}} </span>

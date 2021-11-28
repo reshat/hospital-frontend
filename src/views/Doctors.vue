@@ -46,11 +46,22 @@
   </a-layout-header>
   <a-layout-content style="margin: 0 16px">
     <a-breadcrumb style="margin: 16px 0">
-      <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> </a-breadcrumb-item>
+      <a-breadcrumb-item style="font-size: large; font-weight:bold "> Список докторов </a-breadcrumb-item>
     </a-breadcrumb>
-    <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
-      <span>   </span>
-    </div>
+      <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px'}">
+          <a-card style="width: 480px; margin: 2px ; display: inline-block" v-for="post in info" :key="post.id" >
+            <div style="display: inline-flex">
+              <a-avatar  :size="64">
+                <UserOutlined />
+              </a-avatar>
+            </div>
+            <div style="display: inline-block; margin-left: 12px">
+              <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.surname + ' ' + post.name + ' ' + post.patronymic}}</p>
+              <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.specialization}}</p>
+              <p style="margin: 12px; display: flex; align-items: flex-start"> Опыт работы(в годах): {{post.work_experiences}}</p>
+            </div>
+          </a-card>
+      </div>
   </a-layout-content>
   <a-layout-footer style="text-align: center">
     Психодиспансер для особо-опасных, 2021
@@ -90,7 +101,7 @@ export default defineComponent({
   },
   mounted() {
     axios
-        .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/general')
+        .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/doctors')
         .then(response => {
           this.info = response.data;
         })
@@ -104,12 +115,7 @@ export default defineComponent({
 </script>
 
 <style>
-.boxing {
-  font-size: medium;
-  text-align: justify;
-  -moz-text-align-last: justify;
-  text-align-last: justify;
-}
+
 #components-layout-demo-side .logo {
   height: 16px;
   margin: 16px;
