@@ -5,3 +5,7 @@ import 'ant-design-vue/dist/antd.css';
 import router from './router'
 
 createApp(App).use(router).use(Antd).mount('#app')
+
+window.authorizationBasic = null;
+
+console.log(window.authorizationBasic)
