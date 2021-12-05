@@ -133,6 +133,26 @@ export default defineComponent({
     };
   },
   mounted() {
+    if(localStorage.getItem('loginData')){
+      this.authorizationBasic = {
+        username: localStorage.getItem('loginData'),
+        password: localStorage.getItem('passwordData')
+      }
+    }
+    console.log(this.authorizationBasic);
+    if(localStorage.getItem('userId')){
+      this.userData = {
+        email:localStorage.getItem('userEmail'),
+        id: localStorage.getItem('userId'),
+        login: localStorage.getItem('userLogin'),
+        name: localStorage.getItem('userName'),
+        password: localStorage.getItem('userPassword'),
+        patronymic: localStorage.getItem('userPatronymic'),
+        role: localStorage.getItem('userRole'),
+        surname: localStorage.getItem('userSurname')
+      }
+    }
+    console.log(this.userData);
     axios
         .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/general')
         .then(response => {
@@ -172,7 +192,17 @@ export default defineComponent({
       console.log(this.userData)
 
       if (vm.status === undefined) {
-        console.log('Done!')
+        console.log('Done!');
+        localStorage.setItem('loginData', user);
+        localStorage.setItem('passwordData', pass);
+        localStorage.setItem('userEmail', this.userData.email);
+        localStorage.setItem('userId', this.userData.id);
+        localStorage.setItem('userLogin', this.userData.login);
+        localStorage.setItem('userName', this.userData.name);
+        localStorage.setItem('userPassword', this.userData.password);
+        localStorage.setItem('userPatronymic', this.userData.patronymic);
+        localStorage.setItem('userRole', this.userData.role);
+        localStorage.setItem('userSurname', this.userData.surname);
       } else {
         this.authorizationBasic = undefined;
         this.userData = undefined;
@@ -189,6 +219,7 @@ export default defineComponent({
     {
       this.authorizationBasic = undefined;
       this.userData = undefined;
+      localStorage.clear();
       window.location.reload();
       console.log(this.authorizationBasic);
     }
