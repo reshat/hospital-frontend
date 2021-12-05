@@ -21,11 +21,53 @@
     </a-layout-sider>
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0;" >
-        <a-avatar style="float: right; margin: 16px">
-          <template #icon>
-            <UserOutlined />
-          </template>
-        </a-avatar>
+        <div id="components-popover-demo-placement" style="float: right; margin: 2px" >
+          <div :style="{ clear: 'both', whiteSpace: 'nowrap' }">
+            <a-popover placement="bottomRight" >
+              <template #content >
+                <div v-if="authorizationBasic == null">
+                  <a-button type="link" @click="showModal">Войти</a-button>
+                  <a-modal v-model:visible="visible"  @ok="handleOk" style="text-align: center" :footer="null">
+                    <p><strong> Войти </strong></p>
+                    <a-form
+                        :model="formState"
+                        @finish="handleFinish"
+                        @finishFailed="handleFinishFailed"
+                    >
+                      <a-form-item>
+                        <a-input v-model:value="formState.user" placeholder="Username">
+                          <template #prefix><UserOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
+                        </a-input>
+                      </a-form-item>
+                      <a-form-item>
+                        <a-input v-model:value="formState.password" type="password" placeholder="Password">
+                          <template #prefix><LockOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
+                        </a-input>
+                      </a-form-item>
+                      <a-form-item>
+                        <a-button
+                            v-on:click="autorization(formState)"
+                            type="primal" block
+                            html-type="submit"
+                            :disabled="formState.user === '' || formState.password === ''"
+                        >
+                          Войти
+                        </a-button>
+                        <a-button type="link" style = "margin-top: 12px"><strong>Зарегистрироваться</strong></a-button>
+                      </a-form-item>
+                    </a-form>
+                  </a-modal>
+                </div>
+
+                <div v-else>
+                  <p>Добро пожаловать, {{userData.name}} !</p>
+                  <a-button type="link" @click="exitAccount()">Выйти</a-button>
+                </div>
+              </template>
+              <a-button shape="circle"><UserOutlined /></a-button>
+            </a-popover>
+          </div>
+        </div>
         <span style="float: right; margin-right: 16px; margin-left: 16px ">Горячая линия: +7 962 72 73 773</span>
         <div class="certain-category-search-wrapper" style="width: 300px; margin-left: 15px">
           <a-auto-complete
@@ -62,22 +104,24 @@
 <script>
 
 import {
-  HomeOutlined,
-  TeamOutlined,
   CalendarOutlined,
+  HomeOutlined,
+  LockOutlined,
+  SearchOutlined,
+  TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue';
-import { SearchOutlined } from '@ant-design/icons-vue';
-import { defineComponent, ref } from 'vue';
+import {defineComponent, reactive, ref} from 'vue';
 import axios from 'axios';
 
 
 export default defineComponent({
   components: {
-    HomeOutlined,
-    TeamOutlined,
     CalendarOutlined,
+    HomeOutlined,
+    LockOutlined,
     SearchOutlined,
+    TeamOutlined,
     UserOutlined,
   },
 
@@ -99,6 +143,90 @@ export default defineComponent({
           this.errored = true;
         })
         .finally(() => (this.loading = false));
+  },
+  methods: {
+    getData: async function(url,config, vm){
+      return axios.post(url,{}, {auth: config})
+          .then(function (response) {
+            vm.userData = response.data;
+            console.log(response)
+          })
+          .catch(function (error) {
+            vm.status = error;
+          });
+    } ,
+    autorization: async function (formState) {
+      let vm = this;
+      vm.status = undefined;
+      let user = formState.user;
+      let pass = formState.password;
+
+      let url = 'http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/login';
+
+      this.authorizationBasic = {
+        username: user,
+        password: pass
+      }
+
+      await this.getData(url, this.authorizationBasic, vm);
+      console.log(this.userData)
+
+      if (vm.status === undefined) {
+        console.log('Done!')
+      } else {
+        this.authorizationBasic = undefined;
+        this.userData = undefined;
+      }
+
+      if (this.authorizationBasic !== undefined) {
+        this.visible = false;
+      } else {
+        this.visible = true;
+      }
+    },
+
+    exitAccount: function ()
+    {
+      this.authorizationBasic = undefined;
+      this.userData = undefined;
+      window.location.reload();
+      console.log(this.authorizationBasic);
+    }
+  },
+
+  setup() {
+    const visible = ref(false);
+
+    const showModal = () => {
+      visible.value = true;
+    }
+    const handleOk = e => {
+      console.log(e);
+      visible.value = false;
+    };
+
+    const formState = reactive({
+      user: '',
+      password: '',
+    });
+
+    const handleFinish = values => {
+      console.log(values, formState);
+    };
+
+    const handleFinishFailed = errors => {
+      console.log(errors);
+    };
+
+    return {
+      buttonWidth: ref(70),
+      visible,
+      showModal,
+      handleOk,
+      formState,
+      handleFinish,
+      handleFinishFailed,
+    };
   }
 });
 </script>

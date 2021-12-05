@@ -60,6 +60,7 @@
                 </div>
 
                 <div v-else>
+                  <p>Добро пожаловать, {{userData.name}} !</p>
                   <a-button type="link" @click="exitAccount()">Выйти</a-button>
                 </div>
               </template>
@@ -140,10 +141,12 @@ export default defineComponent({
         })
         .finally(() => (this.loading = false));
   },
+
   methods: {
-    getData: async function(url, vm){
-      return axios.get(url)
+    getData: async function(url,config, vm){
+      return axios.post(url,{}, {auth: config})
           .then(function (response) {
+            vm.userData = response.data;
             console.log(response)
           })
           .catch(function (error) {
@@ -155,48 +158,35 @@ export default defineComponent({
       vm.status = undefined;
       let user = formState.user;
       let pass = formState.password;
+
       let url = 'http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/login';
-      let test = 'http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/test';
 
-      console.log(this.authorizationBasic)
-      console.log('Vp status ' + vm.status)
-
-      this.authorizationBasic = window.btoa(user + ':' + pass);
-      console.log(this.authorizationBasic)
-      //let config = {
-      // "headers": {
-      //  "Authorization": "Basic " + this.authorizationBasic
-      //  }
-      //};
-
-      const ao = await this.getData(url, vm);
-      const oa = await this.getData(test, vm);
-
-      console.log(ao + oa)
-
-      console.log(this.authorizationBasic)
-
-      console.log('Vp status ' + vm.status)
-
-      if (vm.status === undefined) {
-        this.authorizationBasic;
-      } else {
-        this.authorizationBasic = undefined;
+      this.authorizationBasic = {
+        username: user,
+        password: pass
       }
 
-      console.log(this.authorizationBasic)
+      await this.getData(url, this.authorizationBasic, vm);
+      console.log(this.userData)
+
+      if (vm.status === undefined) {
+        console.log('Done!')
+      } else {
+        this.authorizationBasic = undefined;
+        this.userData = undefined;
+      }
+
       if (this.authorizationBasic !== undefined) {
         this.visible = false;
       } else {
         this.visible = true;
       }
-
-
     },
 
     exitAccount: function ()
     {
-      this.authorizationBasic = null;
+      this.authorizationBasic = undefined;
+      this.userData = undefined;
       window.location.reload();
       console.log(this.authorizationBasic);
     }
