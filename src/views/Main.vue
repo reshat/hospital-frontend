@@ -44,9 +44,12 @@
                           <template #prefix><LockOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
                         </a-input>
                       </a-form-item>
+                      <a-form-item style ="margin: 14px">
+                      <p ref="header" style="color: crimson; font-size: 14px; margin: 0px">  </p>
+                      </a-form-item>
                       <a-form-item>
                         <a-button
-                            v-on:click="autorization(formState)"
+                            v-on:click="autorization(formState);"
                             type="primal" block
                             html-type="submit"
                             :disabled="formState.user === '' || formState.password === ''"
@@ -59,7 +62,10 @@
                   </a-modal>
                 </div>
                 <div v-else>
-                  <p>Добро пожаловать, {{this.userData.name}} !</p>
+                  <p>Добро пожаловать, {{this.userData.name}} </p>
+                  <p v-if="userData.role == 'DOCTOR'">Ваша роль:  Доктор </p>
+                  <p v-if="userData.role == 'ADMIN'">Ваша роль:  Админ </p>
+                  <p v-if="userData.role == 'PATIENT'">Ваша роль:  Пациент </p>
                   <a-button type="link" @click="exitAccount()">Выйти</a-button>
                 </div>
               </template>
@@ -208,9 +214,10 @@ export default defineComponent({
 
       if (this.authorizationBasic !== undefined) {
         this.visible = false;
+        this.$refs.header.innerText = "";
       } else {
         this.visible = true;
-      }
+        this.$refs.header.innerText = "Неверный логин или пароль";}
     },
 
     exitAccount: function ()
