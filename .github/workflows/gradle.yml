@@ -19,25 +19,10 @@ jobs:
         run: npm i vue-router@next
       - name: Install ant-design
         run: npm i --save ant-design-vue@next
-      - name: Building the project
-        run: npm run build
-  push:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:  
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@master
-      - name: Installing project dependencies
-        run: npm install
-      - name: Installing axios
-        run: npm install --save axios
-      - name: Install router
-        run: npm i vue-router@next
-      - name: Install ant-design
-        run: npm i --save ant-design-vue@next
-      - name: Building the project
+      - name: Build
         run: npm run build
       - name: Docker image build and push
+        if: steps.Build.outcome == 'success'
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
          image: reshatsultan/hospital
