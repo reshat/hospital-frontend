@@ -109,7 +109,7 @@
               <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.surname + ' ' + post.name + ' ' + post.patronymic}}</p>
               <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.specialization}}</p>
               <p style="margin: 12px; display: flex; align-items: flex-start"> Опыт работы(в годах): {{post.work_experiences}}</p>
-              <div v-if="showPatient"><p><a-button type="link">Записаться на прием</a-button></p></div>
+              <div v-show="this.role == 'PATIENT'"><p><a-button type="link">Записаться на прием</a-button></p></div>
 
             </div>
 
@@ -150,13 +150,16 @@ export default defineComponent({
 
   data() {
     return {
-      showPatient: false,
+      role: localStorage.getItem('userRole'),
       collapsed: ref(false),
       selectedKeys: ref(['1']),
       info: []
     };
   },
   mounted() {
+    if(localStorage.getItem('userRole') == undefined){
+      localStorage.setItem('userRole', 'none');
+    }
     if(localStorage.getItem('loginData')){
       this.authorizationBasic = {
         username: localStorage.getItem('loginData'),
@@ -188,13 +191,7 @@ export default defineComponent({
         })
         .finally(() => (this.loading = false));
 
-    if (this.authorizationBasic !== undefined) {
-      if (this.userData.role == 'PATIENT') {
-        this.$refs.appoint.hidden = false;
-        this.showPatient = true;
-        this.$forceUpdate();
-      }
-    }
+
   },
   methods: {
     getData: async function(url,config, vm){
@@ -208,6 +205,7 @@ export default defineComponent({
           });
     } ,
     autorization: async function (formState) {
+
       let vm = this;
       vm.status = undefined;
       let user = formState.user;
@@ -250,6 +248,15 @@ export default defineComponent({
       } else {
         this.visible = true;
         this.$refs.header.innerText = "Неверный логин или пароль";
+      }
+      if (this.authorizationBasic !== undefined) {
+        if (this.userData.role == 'PATIENT') {
+          this.$refs.appoint.hidden = false;
+
+          this.role = localStorage.getItem('userRole');
+          //this.window.location.reload();
+         // window.location.reload();
+        }
       }
     },
 
