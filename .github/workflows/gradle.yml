@@ -21,11 +21,15 @@ jobs:
         run: npm i --save ant-design-vue@next
       - name: Building the project
         run: npm run build
+  push:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:  
       - name: Docker image build and push
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          image: reshatsultan/hospital-frontend
-          tags: latest
-          registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+         image: reshatsultan/hospital
+         tags: latest
+         registry: docker.io
+         username: ${{ secrets.DOCKER_USERNAME }}
+         password: ${{ secrets.DOCKER_PASSWORD }}     
