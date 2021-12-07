@@ -99,7 +99,20 @@
           <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> </a-breadcrumb-item>
         </a-breadcrumb>
         <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
-          <span>   </span>
+          <p style="margin: 12px"><strong>Записи</strong></p>
+          <a-card  style="margin: 12px; width: 650px; border-color: #141414; border-width: 3px" v-for="appoint in info" :key="appoint">
+            <div style="display: inline-block;">
+              <div style="border: 2px solid black; margin: 12px;display: inline-block; " :style="{ padding: '24px', background: '#fff', minHeight: '10px', textJustify: justify}">
+                <span style="margin: 12px;">card content</span>
+              </div>
+              <div style="border: 2px solid black; margin: 12px;display: inline-block;" :style="{ padding: '24px', background: '#fff', minHeight: '10px', textJustify: justify}">
+                <span style="margin: 12px;">card content</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: flex-start;border: 2px solid black;">
+              <p>{{appoint.name}}</p>
+            </div>
+          </a-card>
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -160,11 +173,12 @@ export default defineComponent({
         surname: localStorage.getItem('userSurname')
       }
     }
-    console.log(this.userData);
+    console.log(this.userData.id);
     axios
-        .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/general')
+        .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/viewRecords?id=' + this.userData.id, {auth: this.authorizationBasic})
         .then(response => {
           this.info = response.data;
+          console.log(response);
         })
         .catch(error => {
           console.log(error);
@@ -177,8 +191,12 @@ export default defineComponent({
         this.$refs.appoint.hidden = false;
       }
     }
+
   },
   methods: {
+    getRole: function (){
+      return this.userData.role;
+    },
     getData: async function(url,config, vm){
       return axios.post(url,{}, {auth: config})
           .then(function (response) {

@@ -13,10 +13,12 @@
           <TeamOutlined />
           <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
         </a-menu-item>
+        <div ref="appoint" hidden>
         <a-menu-item key="3">
           <CalendarOutlined />
-          <span> <router-link to="/appoint"> Запись на прием </router-link>    </span>
+          <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
         </a-menu-item>
+        </div>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -166,6 +168,12 @@ export default defineComponent({
           this.errored = true;
         })
         .finally(() => (this.loading = false));
+
+    if (this.authorizationBasic !== undefined) {
+      if (this.userData.role == 'PATIENT') {
+        this.$refs.appoint.hidden = false;
+      }
+    }
   },
 
   methods: {
@@ -215,9 +223,14 @@ export default defineComponent({
       if (this.authorizationBasic !== undefined) {
         this.visible = false;
         this.$refs.header.innerText = "";
+        if (this.userData.role == 'PATIENT')
+        {
+          this.$refs.appoint.hidden = false;
+        }
       } else {
         this.visible = true;
-        this.$refs.header.innerText = "Неверный логин или пароль";}
+        this.$refs.header.innerText = "Неверный логин или пароль";
+      }
     },
 
     exitAccount: function ()

@@ -13,10 +13,12 @@
       <TeamOutlined />
       <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
     </a-menu-item>
-    <a-menu-item key="3">
-      <CalendarOutlined />
-      <span> <router-link to="/appoint"> Запись на прием </router-link>    </span>
-    </a-menu-item>
+    <div ref="appoint" hidden>
+      <a-menu-item key="3">
+        <CalendarOutlined />
+        <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
+      </a-menu-item>
+    </div>
   </a-menu>
 </a-layout-sider>
 <a-layout>
@@ -97,9 +99,9 @@
       <a-breadcrumb-item style="font-size: large; font-weight:bold "> Список докторов </a-breadcrumb-item>
     </a-breadcrumb>
       <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px'}">
-          <a-card style="width: 480px; margin: 2px ; display: inline-block" v-for="post in info" :key="post.id" >
+          <a-card style="width: 500px; margin: 2px ; display: inline-block" v-for="post in info" :key="post.id" >
             <div style="display: inline-flex">
-              <a-avatar  :size="64">
+              <a-avatar  :size="128">
                 <UserOutlined />
               </a-avatar>
             </div>
@@ -107,7 +109,11 @@
               <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.surname + ' ' + post.name + ' ' + post.patronymic}}</p>
               <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.specialization}}</p>
               <p style="margin: 12px; display: flex; align-items: flex-start"> Опыт работы(в годах): {{post.work_experiences}}</p>
+              <div v-if="showPatient"><p><a-button type="link">Записаться на прием</a-button></p></div>
+
             </div>
+
+
           </a-card>
       </div>
   </a-layout-content>
@@ -144,6 +150,7 @@ export default defineComponent({
 
   data() {
     return {
+      showPatient: false,
       collapsed: ref(false),
       selectedKeys: ref(['1']),
       info: []
@@ -180,6 +187,14 @@ export default defineComponent({
           this.errored = true;
         })
         .finally(() => (this.loading = false));
+
+    if (this.authorizationBasic !== undefined) {
+      if (this.userData.role == 'PATIENT') {
+        this.$refs.appoint.hidden = false;
+        this.showPatient = true;
+        this.$forceUpdate();
+      }
+    }
   },
   methods: {
     getData: async function(url,config, vm){
@@ -228,6 +243,10 @@ export default defineComponent({
       if (this.authorizationBasic !== undefined) {
         this.visible = false;
         this.$refs.header.innerText = "";
+        if (this.userData.role == 'PATIENT')
+        {
+          this.$refs.appoint.hidden = false;
+        }
       } else {
         this.visible = true;
         this.$refs.header.innerText = "Неверный логин или пароль";
