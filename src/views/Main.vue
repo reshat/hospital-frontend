@@ -13,10 +13,12 @@
           <TeamOutlined />
           <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
         </a-menu-item>
-        <a-menu-item key="3">
-          <CalendarOutlined />
-          <span> <router-link to="/appoint"> Запись на прием </router-link>    </span>
-        </a-menu-item>
+        <div v-show="this.role == 'PATIENT'">
+          <a-menu-item key="3">
+            <CalendarOutlined />
+            <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
+          </a-menu-item>
+        </div>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -129,12 +131,16 @@ export default defineComponent({
   },
   data() {
     return {
+      role: localStorage.getItem('userRole'),
       collapsed: ref(false),
       selectedKeys: ref(['1']),
       info: []
     };
   },
   mounted() {
+    if(localStorage.getItem('userRole') == undefined){
+      localStorage.setItem('userRole', 'none');
+    }
     if(localStorage.getItem('loginData')){
       this.authorizationBasic = {
         username: localStorage.getItem('loginData'),
@@ -217,7 +223,13 @@ export default defineComponent({
         this.$refs.header.innerText = "";
       } else {
         this.visible = true;
-        this.$refs.header.innerText = "Неверный логин или пароль";}
+        this.$refs.header.innerText = "Неверный логин или пароль";
+      }
+      if (this.authorizationBasic !== undefined) {
+        if (this.userData.role == 'PATIENT') {
+          this.role = localStorage.getItem('userRole');
+        }
+      }
     },
 
     exitAccount: function ()
