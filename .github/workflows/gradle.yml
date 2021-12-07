@@ -20,9 +20,10 @@ jobs:
       - name: Install ant-design
         run: npm i --save ant-design-vue@next
       - name: Build
+        id: build
         run: npm run build
       - name: Docker image build and push
-        if: steps.Build.outcome == 'success'
+        if: steps.build.outcome == 'success'
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
          image: reshatsultan/hospital
