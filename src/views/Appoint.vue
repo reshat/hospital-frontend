@@ -13,7 +13,7 @@
           <TeamOutlined />
           <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
         </a-menu-item>
-        <div ref="appoint" hidden>
+        <div v-show="this.role == 'PATIENT'">
           <a-menu-item key="3">
             <CalendarOutlined />
             <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
@@ -135,12 +135,16 @@ export default defineComponent({
 
   data() {
     return {
+      role: localStorage.getItem('userRole'),
       collapsed: ref(false),
       selectedKeys: ref(['1']),
       info: []
     };
   },
   mounted() {
+    if(localStorage.getItem('userRole') == undefined){
+      localStorage.setItem('userRole', 'none');
+    }
     if(localStorage.getItem('loginData')){
       this.authorizationBasic = {
         username: localStorage.getItem('loginData'),
@@ -172,11 +176,6 @@ export default defineComponent({
         })
         .finally(() => (this.loading = false));
 
-    if (this.authorizationBasic !== undefined) {
-      if (this.userData.role == 'PATIENT') {
-        this.$refs.appoint.hidden = false;
-      }
-    }
   },
   methods: {
     getData: async function(url,config, vm){
@@ -225,13 +224,14 @@ export default defineComponent({
       if (this.authorizationBasic !== undefined) {
         this.visible = false;
         this.$refs.header.innerText = "";
-        if (this.userData.role == 'PATIENT')
-        {
-          this.$refs.appoint.hidden = false;
-        }
       } else {
         this.visible = true;
         this.$refs.header.innerText = "Неверный логин или пароль";
+      }
+      if (this.authorizationBasic !== undefined) {
+        if (this.userData.role == 'PATIENT') {
+          this.role = localStorage.getItem('userRole');
+        }
       }
     },
 

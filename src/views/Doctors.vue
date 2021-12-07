@@ -13,7 +13,7 @@
       <TeamOutlined />
       <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
     </a-menu-item>
-    <div ref="appoint" hidden>
+    <div v-show="this.role == 'PATIENT'">
       <a-menu-item key="3">
         <CalendarOutlined />
         <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
@@ -241,21 +241,13 @@ export default defineComponent({
       if (this.authorizationBasic !== undefined) {
         this.visible = false;
         this.$refs.header.innerText = "";
-        if (this.userData.role == 'PATIENT')
-        {
-          this.$refs.appoint.hidden = false;
-        }
       } else {
         this.visible = true;
         this.$refs.header.innerText = "Неверный логин или пароль";
       }
       if (this.authorizationBasic !== undefined) {
         if (this.userData.role == 'PATIENT') {
-          this.$refs.appoint.hidden = false;
-
           this.role = localStorage.getItem('userRole');
-          //this.window.location.reload();
-         // window.location.reload();
         }
       }
     },
