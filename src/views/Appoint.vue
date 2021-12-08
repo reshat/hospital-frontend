@@ -158,22 +158,21 @@ export default defineComponent({
       selectedKeys: ref(['1']),
       info: [],
       showTables: false,
-      doctor: undefined
+      doctor: null
     };
   },
-  mounted() {
-    if(localStorage.getItem('userRole') == undefined){
-      localStorage.setItem('userRole', 'none');
-    }
-
+  created() {
     this.doctor = {
       id: localStorage.getItem('doctorIdAppoint'),
       name: localStorage.getItem('doctorNameAppoint'),
       spec: localStorage.getItem('doctorSpecAppoint'),
       exp: localStorage.getItem('doctorExpAppoint')
     }
-
-
+  },
+  mounted() {
+    if(localStorage.getItem('userRole') == undefined){
+      localStorage.setItem('userRole', 'none');
+    }
 
     if(localStorage.getItem('loginData')){
       this.authorizationBasic = {

@@ -82,22 +82,6 @@
           </div>
         </div>
         <span style="float: right; margin-right: 16px; margin-left: 16px ">Горячая линия: +7 962 72 73 773</span>
-        <div class="certain-category-search-wrapper" style="width: 300px; margin-left: 15px">
-          <a-auto-complete
-              v-model:value="value"
-              class="certain-category-search"
-              dropdown-class-name="certain-category-search-dropdown"
-              :dropdown-match-select-width="false"
-              :dropdown-style="{ width: '300px' }"
-              size="large"
-              style="width: 100%"
-              option-label-prop="value"
-          >
-            <a-input placeholder="Введите поисковый запрос">
-              <template #suffix><search-outlined class="certain-category-icon" /></template>
-            </a-input>
-          </a-auto-complete>
-        </div>
       </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
@@ -119,7 +103,6 @@ import {
   CalendarOutlined,
   HomeOutlined,
   LockOutlined,
-  SearchOutlined,
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue';
@@ -131,7 +114,6 @@ export default defineComponent({
     HomeOutlined,
     TeamOutlined,
     CalendarOutlined,
-    SearchOutlined,
     UserOutlined,
     LockOutlined,
   },
@@ -310,23 +292,6 @@ export default defineComponent({
 [data-theme='dark'] .site-layout .site-layout-background {
   background: #141414;
 }
-.certain-category-search-dropdown .ant-select-dropdown-menu-item-group-title {
-  color: #666;
-  font-weight: bold;
-}
-.certain-category-search-dropdown .ant-select-dropdown-menu-item-group {
-  border-bottom: 1px solid #f6f6f6;
-}
-.certain-category-search-dropdown .ant-select-dropdown-menu-item {
-  padding-left: 16px;
-}
-.certain-category-search-dropdown .ant-select-dropdown-menu-item.show-all {
-  text-align: center;
-  cursor: default;
-}
-.certain-category-search-dropdown .ant-select-dropdown-menu {
-  max-height: 300px;
-}
 </style>
 
 
@@ -347,25 +312,5 @@ li {
 a {
   color: black;
 }
-.certain-category-search-wrapper
-:deep(.certain-category-search.ant-select-auto-complete)
-.ant-input-affix-wrapper
-.ant-input-suffix {
-  right: 12px;
-}
-.certain-category-search-wrapper :deep(.certain-search-item-count) {
-  position: absolute;
-  color: #999;
-  right: 16px;
-}
-.certain-category-search-wrapper
-:deep(.certain-category-search.ant-select-focused)
-.certain-category-icon {
-  color: #108ee9;
-}
-.certain-category-search-wrapper :deep(.certain-category-icon) {
-  color: #6e6e6e;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  font-size: 16px;
-}
+
 </style>
