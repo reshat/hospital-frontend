@@ -19,6 +19,12 @@
         <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
       </a-menu-item>
     </div>
+    <div v-show="this.role == 'DOCTOR'">
+      <a-menu-item key="3">
+        <CalendarOutlined />
+        <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>
+      </a-menu-item>
+    </div>
   </a-menu>
 </a-layout-sider>
 <a-layout>
@@ -109,7 +115,8 @@
               <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.surname + ' ' + post.name + ' ' + post.patronymic}}</p>
               <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.specialization}}</p>
               <p style="margin: 12px; display: flex; align-items: flex-start"> Опыт работы(в годах): {{post.work_experiences}}</p>
-              <div v-show="this.role == 'PATIENT'"><p><a-button type="link">Записаться на прием</a-button></p></div>
+              <div v-show="this.role == 'PATIENT'"><p><a-button @click = "takeDoctorData(post.id,post.surname + ' ' + post.name + ' ' + post.patronymic,
+              post.specialization, post.work_experiences )" type="link" href = "/appoint">Записаться на прием</a-button></p></div>
 
             </div>
 
@@ -194,6 +201,12 @@ export default defineComponent({
 
   },
   methods: {
+    takeDoctorData: function (id, name, spec, exp,){
+      localStorage.setItem('doctorIdAppoint',id);
+      localStorage.setItem('doctorNameAppoint',name);
+      localStorage.setItem('doctorSpecAppoint',spec);
+      localStorage.setItem('doctorExpAppoint',exp);
+    },
     getData: async function(url,config, vm){
       return axios.post(url,{}, {auth: config})
           .then(function (response) {
@@ -246,9 +259,7 @@ export default defineComponent({
         this.$refs.header.innerText = "Неверный логин или пароль";
       }
       if (this.authorizationBasic !== undefined) {
-        if (this.userData.role == 'PATIENT') {
           this.role = localStorage.getItem('userRole');
-        }
       }
     },
 

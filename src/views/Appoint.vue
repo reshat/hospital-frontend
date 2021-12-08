@@ -19,6 +19,12 @@
             <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
           </a-menu-item>
         </div>
+        <div v-show="this.role == 'DOCTOR'">
+          <a-menu-item key="3">
+            <CalendarOutlined />
+            <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>
+          </a-menu-item>
+        </div>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -77,29 +83,43 @@
           </div>
         </div>
         <span style="float: right; margin-right: 16px; margin-left: 16px ">Горячая линия: +7 962 72 73 773</span>
-        <div class="certain-category-search-wrapper" style="width: 300px; margin-left: 15px">
-          <a-auto-complete
-              v-model:value="value"
-              class="certain-category-search"
-              dropdown-class-name="certain-category-search-dropdown"
-              :dropdown-match-select-width="false"
-              :dropdown-style="{ width: '300px' }"
-              size="large"
-              style="width: 100%"
-              option-label-prop="value"
-          >
-            <a-input placeholder="Введите поисковый запрос">
-              <template #suffix><search-outlined class="certain-category-icon" /></template>
-            </a-input>
-          </a-auto-complete>
-        </div>
       </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
           <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> </a-breadcrumb-item>
         </a-breadcrumb>
         <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
-          <span>   </span>
+          <a-card style="width: 50%; margin: 12px;" >
+            <div style="display: inline-block; padding: 10px;">
+              <a-avatar  :size ="128">
+                <UserOutlined />
+              </a-avatar>
+              <p>&nbsp;	</p>
+            </div>
+            <div style="margin: 12px; display:inline-block; text-align: left;-moz-text-align-last: left; text-align-last: left;">
+            <p style="margin: 12px; "><strong> Выбранный врач: </strong> </p>
+            <p style="margin: 12px; "> {{doctor.name}}</p>
+            <p style="margin: 12px; "> {{doctor.spec}}</p>
+            <p style="margin: 12px; "> Опыт работы(в годах): {{doctor.exp}}</p>
+              <p>&nbsp;	</p>
+            </div>
+          </a-card>
+
+          <a-card style="width: 90%; margin: 12px;" >
+            <div style="margin: 12px; text-align: left;-moz-text-align-last: left; text-align-last: left;">
+              <strong style = " margin-right: 12px ">Часы приема: </strong>
+              <a-popover placement="bottom">
+                <template #content>
+                  <a-alert :message="`You selected date: ${selectedValue && selectedValue.format('YYYY-MM-DD')}`" />
+                  <div :style="{ width: '300px', border: '1px solid #d9d9d9', borderRadius: '4px' }">
+                    <a-calendar :value="date" @select="onSelect" @panelChange="onPanelChange" :fullscreen="false" />
+                  </div>
+                </template>
+                <a-button>Выбор даты</a-button>
+              </a-popover>
+              <button></button>
+            </div>
+          </a-card>
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -115,7 +135,6 @@ import {
   CalendarOutlined,
   HomeOutlined,
   LockOutlined,
-  SearchOutlined,
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue';
@@ -128,7 +147,6 @@ export default defineComponent({
     CalendarOutlined,
     HomeOutlined,
     LockOutlined,
-    SearchOutlined,
     TeamOutlined,
     UserOutlined,
   },
@@ -138,13 +156,25 @@ export default defineComponent({
       role: localStorage.getItem('userRole'),
       collapsed: ref(false),
       selectedKeys: ref(['1']),
-      info: []
+      info: [],
+      showTables: false,
+      doctor: undefined
     };
   },
   mounted() {
     if(localStorage.getItem('userRole') == undefined){
       localStorage.setItem('userRole', 'none');
     }
+
+    this.doctor = {
+      id: localStorage.getItem('doctorIdAppoint'),
+      name: localStorage.getItem('doctorNameAppoint'),
+      spec: localStorage.getItem('doctorSpecAppoint'),
+      exp: localStorage.getItem('doctorExpAppoint')
+    }
+
+
+
     if(localStorage.getItem('loginData')){
       this.authorizationBasic = {
         username: localStorage.getItem('loginData'),
@@ -178,6 +208,9 @@ export default defineComponent({
 
   },
   methods: {
+    showTime: function () {
+      this.showTables = true;
+    },
     getData: async function(url,config, vm){
       return axios.post(url,{}, {auth: config})
           .then(function (response) {
@@ -229,9 +262,7 @@ export default defineComponent({
         this.$refs.header.innerText = "Неверный логин или пароль";
       }
       if (this.authorizationBasic !== undefined) {
-        if (this.userData.role == 'PATIENT') {
           this.role = localStorage.getItem('userRole');
-        }
       }
     },
 
@@ -246,6 +277,18 @@ export default defineComponent({
   },
 
   setup() {
+    const date = ref();
+    const selectedValue = ref();
+
+    const onSelect = value => {
+      date.value = value;
+      selectedValue.value = value;
+    };
+
+    const onPanelChange = value => {
+      date.value = value;
+    };
+
     const visible = ref(false);
 
     const showModal = () => {
@@ -271,6 +314,10 @@ export default defineComponent({
 
     return {
       buttonWidth: ref(70),
+      date,
+      selectedValue,
+      onSelect,
+      onPanelChange,
       visible,
       showModal,
       handleOk,
@@ -301,27 +348,6 @@ export default defineComponent({
 [data-theme='dark'] .site-layout .site-layout-background {
   background: #141414;
 }
-.certain-category-search-dropdown .ant-select-dropdown-menu-item-group-title {
-  color: #666;
-  font-weight: bold;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu-item-group {
-  border-bottom: 1px solid #f6f6f6;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu-item {
-  padding-left: 16px;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu-item.show-all {
-  text-align: center;
-  cursor: default;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu {
-  max-height: 300px;
-}
 </style>
 
 
@@ -344,26 +370,5 @@ li {
 
 a {
   color: black;
-}
-.certain-category-search-wrapper
-:deep(.certain-category-search.ant-select-auto-complete)
-.ant-input-affix-wrapper
-.ant-input-suffix {
-  right: 12px;
-}
-.certain-category-search-wrapper :deep(.certain-search-item-count) {
-  position: absolute;
-  color: #999;
-  right: 16px;
-}
-.certain-category-search-wrapper
-:deep(.certain-category-search.ant-select-focused)
-.certain-category-icon {
-  color: #108ee9;
-}
-.certain-category-search-wrapper :deep(.certain-category-icon) {
-  color: #6e6e6e;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  font-size: 16px;
 }
 </style>

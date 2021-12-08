@@ -19,6 +19,12 @@
             <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
           </a-menu-item>
         </div>
+        <div v-show="this.role == 'DOCTOR'">
+          <a-menu-item key="3">
+            <CalendarOutlined />
+            <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>
+          </a-menu-item>
+        </div>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -226,9 +232,7 @@ export default defineComponent({
         this.$refs.header.innerText = "Неверный логин или пароль";
       }
       if (this.authorizationBasic !== undefined) {
-        if (this.userData.role == 'PATIENT') {
           this.role = localStorage.getItem('userRole');
-        }
       }
     },
 

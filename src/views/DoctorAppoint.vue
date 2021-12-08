@@ -104,24 +104,28 @@
         <a-breadcrumb style="margin: 16px 0">
           <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> </a-breadcrumb-item>
         </a-breadcrumb>
-        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px'}">
-          <p style="margin: 12px"><strong>Записи</strong></p>
-          <a-card  style="margin: 12px; width: 650px;" v-for="appoint in info" :key="appoint">
-            <div style="display: inline-block;margin-left: 12px; margin-right: 12px">
-              <div style="display: inline-block; margin-right: 12px">
-                <span > <small> Доктор:  <span style="color: #108ee9"> {{appoint.name + ' ' + appoint.surname + ' ' + appoint.patronymic }} </span> </small></span>
-              </div>
-              <div style="display: inline-block; margin-left: 12px; margin-right: 12px">
-                <span> <small> Дата: <span style="color: #108ee9"> {{appoint.date}} </span> </small></span>
-              </div>
-            </div>
-            <div style="margin: 12px;">
-              <p> <small> Запись: </small> </p>
-              <a-card style="width: 550px">
-                <p style = "text-align-all: left; text-align: right; -moz-text-align-last: left; text-align-last: left;"> <small> {{appoint.record}}</small> </p>
-              </a-card>
-            </div>
-          </a-card>
+        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
+          <div style="max-width: 155px">
+            <a-dropdown >
+              <a-button @click.prevent>
+                Выбрать пациента
+                <DownOutlined />
+              </a-button>
+              <template #overlay>
+                <a-menu style="max-width: 400px">
+                  <a-menu-item>
+                    <a href="javascript:;">1st menu item</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a href="javascript:;">2nd menu item</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a href="javascript:;">3rd menu item</a>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </div>
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -140,6 +144,7 @@ import {
   SearchOutlined,
   TeamOutlined,
   UserOutlined,
+  DownOutlined,
 } from '@ant-design/icons-vue';
 import {defineComponent, reactive, ref} from 'vue';
 import axios from 'axios';
@@ -153,6 +158,7 @@ export default defineComponent({
     SearchOutlined,
     TeamOutlined,
     UserOutlined,
+    DownOutlined,
   },
 
   data() {
@@ -186,23 +192,20 @@ export default defineComponent({
         surname: localStorage.getItem('userSurname')
       }
     }
-    console.log(this.userData.id);
+    console.log(this.userData);
     axios
-        .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/viewRecords?id=' + this.userData.id, {auth: this.authorizationBasic})
+        .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/general')
         .then(response => {
           this.info = response.data;
-          console.log(response);
         })
         .catch(error => {
           console.log(error);
           this.errored = true;
         })
         .finally(() => (this.loading = false));
+
   },
   methods: {
-    getRole: function (){
-      return this.userData.role;
-    },
     getData: async function(url,config, vm){
       return axios.post(url,{}, {auth: config})
           .then(function (response) {
@@ -306,6 +309,12 @@ export default defineComponent({
 </script>
 
 <style>
+.boxing {
+  font-size: medium;
+  text-align: justify;
+  -moz-text-align-last: justify;
+  text-align-last: justify;
+}
 #components-layout-demo-side .logo {
   height: 16px;
   margin: 16px;
