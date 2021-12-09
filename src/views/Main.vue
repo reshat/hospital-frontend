@@ -87,8 +87,8 @@
         <a-breadcrumb style="margin: 16px 0">
           <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> {{info.header}}</a-breadcrumb-item>
         </a-breadcrumb>
-        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
-          <span>  {{info.text}} </span>
+        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '200px', textJustify: justify}">
+          <div style="margin-left: 150px; margin-right: 150px; margin-top: 20px; "><span>  {{info.text}} </span> </div>
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
