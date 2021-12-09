@@ -118,9 +118,6 @@
                 </template>
                 <a-button>Выбор даты </a-button>
               </a-popover>
-              <div v-show="showAlert">
-                <a-alert message="Success Text" type="success" />
-              </div>
             </div>
                 <div style="display: inline-block;">
                   <a-button v-if = "check(8) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 8)">
@@ -288,7 +285,6 @@ export default defineComponent({
       selectedKeys: ref(['1']),
       doctor: null,
       clickedButton: false,
-      showAlert: false
     };
   },
   created() {
@@ -334,22 +330,23 @@ export default defineComponent({
       postdata.append('date_of_receipt', date);
       postdata.append('time_of_receipt', time + ':00:00');
 
-      var auth = new URLSearchParams();
-      auth.append('username', this.authorizationBasic.username);
-      auth.append('password', this.authorizationBasic.password);
+      console.log(this.doctor.id)
+      console.log(this.userData.id)
+
       console.log(date);
-      console.log(time)
+      console.log(time + ':00:00')
       axios
           .post('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/makeAnAppointment',
               postdata, {
             auth: this.authorizationBasic
               })
           .then(response => {
-            console.log(response.data);
+            console.log(response.data)
           })
           .catch(error => {
-            console.log(error);
-          });
+            console.log(error.response.data)
+          })
+
     },
     check: function (i){
       let a = false;
