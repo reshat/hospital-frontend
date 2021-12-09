@@ -210,16 +210,17 @@ export default defineComponent({
   },
   methods: {
     check: async function (i){
+      let a = false;
       for (let j = 0; j < this.info.length; j++){
         console.log('-' + this.info[j].timeOfReceipt);
         console.log(('+' + i.toString() + ':00:00'))
         console.log('Какое число ' + this.info[j].timeOfReceipt.localeCompare((i.toString() + ':00:00')) )
         if(this.info[j].timeOfReceipt.localeCompare((i.toString() + ':00:00')) === 0)
         {
-          return true;
+          a = true;
         }
       }
-      return false;
+      return a;
     },
     getInfo: async function (date){
       console.log(date);
