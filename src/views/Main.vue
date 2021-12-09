@@ -13,15 +13,15 @@
           <TeamOutlined />
           <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
         </a-menu-item>
-        <div v-show="this.role == 'PATIENT'">
+        <div v-show=" (this.role === 'PATIENT')">
           <a-menu-item key="3">
             <CalendarOutlined />
             <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
           </a-menu-item>
         </div>
-        <div v-show="this.role == 'DOCTOR'">
-          <a-menu-item key="3">
-            <CalendarOutlined />
+        <div v-show="this.role === 'DOCTOR'">
+          <a-menu-item key="4">
+            <CheckSquareOutlined />
             <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>
           </a-menu-item>
         </div>
@@ -64,7 +64,7 @@
                         >
                           Войти
                         </a-button>
-                        <a-button type="link" style = "margin-top: 12px"><strong>Зарегистрироваться</strong></a-button>
+                        <a-button type="link" href = "/register" style = "margin-top: 12px" ><strong>Зарегистрироваться</strong></a-button>
                       </a-form-item>
                     </a-form>
                   </a-modal>
@@ -105,6 +105,7 @@ import {
   LockOutlined,
   TeamOutlined,
   UserOutlined,
+  CheckSquareOutlined,
 } from '@ant-design/icons-vue';
 import {defineComponent, reactive, ref} from 'vue';
 import axios from 'axios';
@@ -116,6 +117,7 @@ export default defineComponent({
     CalendarOutlined,
     UserOutlined,
     LockOutlined,
+    CheckSquareOutlined,
   },
   data() {
     return {

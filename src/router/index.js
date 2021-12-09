@@ -4,6 +4,7 @@ import Doctors from '@/views/Doctors'
 import Appoint from "@/views/Appoint";
 import PatientAppoints from "@/views/PatientAppoints";
 import DoctorAppoint from "@/views/DoctorAppoint";
+import register from "@/views/register";
 
 const routes = [
   {
@@ -25,6 +26,10 @@ const routes = [
   {
     path: '/doctorAppoint',
     component: DoctorAppoint
+  },
+  {
+    path: '/register',
+    component: register
   }
 ]
 

@@ -13,13 +13,13 @@
       <TeamOutlined />
       <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
     </a-menu-item>
-    <div v-show="this.role == 'PATIENT'">
+    <div v-show="this.role === ('PATIENT')">
       <a-menu-item key="3">
         <CalendarOutlined />
         <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
       </a-menu-item>
     </div>
-    <div v-show="this.role == 'DOCTOR'">
+    <div v-show="this.role === 'DOCTOR'">
       <a-menu-item key="3">
         <CalendarOutlined />
         <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>

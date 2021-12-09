@@ -13,13 +13,13 @@
           <TeamOutlined />
           <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
         </a-menu-item>
-        <div v-show="this.role == 'PATIENT'">
+        <div v-show="this.role === 'PATIENT'">
           <a-menu-item key="3">
             <CalendarOutlined />
             <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
           </a-menu-item>
         </div>
-        <div v-show="this.role == 'DOCTOR'">
+        <div v-show="this.role === 'DOCTOR'">
           <a-menu-item key="3">
             <CalendarOutlined />
             <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>
@@ -96,7 +96,7 @@
                 <span > <small> Доктор:  <span style="color: #108ee9"> {{appoint.name + ' ' + appoint.surname + ' ' + appoint.patronymic }} </span> </small></span>
               </div>
               <div style="display: inline-block; margin-left: 12px; margin-right: 12px">
-                <span> <small> Дата: <span style="color: #108ee9"> {{appoint.date}} </span> </small></span>
+                <span> <small> Дата: <span style="color: #108ee9"> {{appoint.dateOfReceipt}} </span> </small></span>
               </div>
             </div>
             <div style="margin: 12px;">
@@ -129,6 +129,14 @@ import axios from 'axios';
 
 
 export default defineComponent({
+  computed: {
+    axiosParams() {
+      const params = new URLSearchParams();
+      params.append('username', localStorage.getItem('loginData'));
+      params.append('password', localStorage.getItem('passwordData'));
+      return params;
+    }
+  },
   components: {
     CalendarOutlined,
     HomeOutlined,
@@ -169,19 +177,23 @@ export default defineComponent({
       }
     }
     console.log(this.userData.id);
-    axios
-        .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/viewRecords?id=' + this.userData.id, {auth: this.authorizationBasic})
-        .then(response => {
-          this.info = response.data;
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-          this.errored = true;
-        })
-        .finally(() => (this.loading = false));
+
+    this.getAppoint();
   },
   methods: {
+    getAppoint: function (){
+      return  axios
+          .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/viewRecords?id=' + this.userData.id, {auth: this.authorizationBasic})
+          .then(response => {
+            this.info = response.data;
+            console.log(response);
+          })
+          .catch(error => {
+            console.log(error);
+            this.errored = true;
+          })
+          .finally(() => (this.loading = false));
+    },
     getRole: function (){
       return this.userData.role;
     },

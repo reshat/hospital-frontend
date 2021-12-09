@@ -13,14 +13,14 @@
           <TeamOutlined />
           <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
         </a-menu-item>
-        <div v-show="this.role == 'PATIENT'">
+        <div v-show="this.role === ('PATIENT')">
           <a-menu-item key="3">
             <CalendarOutlined />
             <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
           </a-menu-item>
         </div>
-        <div v-show="this.role == 'DOCTOR'">
-          <a-menu-item key="3">
+        <div v-show="this.role === 'DOCTOR'">
+          <a-menu-item key="4">
             <CalendarOutlined />
             <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>
           </a-menu-item>
@@ -89,7 +89,7 @@
           <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> </a-breadcrumb-item>
         </a-breadcrumb>
         <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
-          <a-card style="width: 50%; margin: 12px;" >
+          <a-card style="width: 70%; margin: 12px;" >
             <div style="display: inline-block; padding: 10px;">
               <a-avatar  :size ="128">
                 <UserOutlined />
@@ -114,10 +114,23 @@
                   <div :style="{ width: '300px', border: '1px solid #d9d9d9', borderRadius: '4px' }">
                     <a-calendar :value="date" @select="onSelect" @panelChange="onPanelChange" :fullscreen="false" />
                   </div>
+                  <a-button style ="margin: 12px" @click = "showTime(selectedValue && selectedValue.format('YYYY-MM-DD'))">Выбрать</a-button>
                 </template>
-                <a-button>Выбор даты</a-button>
+                <a-button>Выбор даты </a-button>
               </a-popover>
-              <button></button>
+            </div>
+            <div v-if="clickedButton">
+              <div v-for="i in 12" :key = i >
+                <a-button v-if = "check(8+i) === true" style = "margin:12px; display: inline-block; width: 23%; background-color: aquamarine" type="default" @click="showModal">
+                  {{8 + i}}.00
+                </a-button>
+                <a-button v-else style = "margin:12px; display: inline-block; width: 23%; background-color: gray" type="default" @click="showModal">
+                  {{8 + i}}.00
+                </a-button>
+                <a-modal v-model:visible="visible" >
+                      <p>Вы хотите записаться в это время?</p>
+                </a-modal>
+              </div>
             </div>
           </a-card>
         </div>
@@ -153,12 +166,12 @@ export default defineComponent({
 
   data() {
     return {
+      info: [],
       role: localStorage.getItem('userRole'),
       collapsed: ref(false),
       selectedKeys: ref(['1']),
-      info: [],
-      showTables: false,
-      doctor: null
+      doctor: null,
+      clickedButton: false,
     };
   },
   created() {
@@ -169,21 +182,21 @@ export default defineComponent({
       exp: localStorage.getItem('doctorExpAppoint')
     }
   },
-  mounted() {
-    if(localStorage.getItem('userRole') == undefined){
+  async mounted() {
+    if (localStorage.getItem('userRole') == undefined) {
       localStorage.setItem('userRole', 'none');
     }
 
-    if(localStorage.getItem('loginData')){
+    if (localStorage.getItem('loginData')) {
       this.authorizationBasic = {
         username: localStorage.getItem('loginData'),
         password: localStorage.getItem('passwordData')
       }
     }
     console.log(this.authorizationBasic);
-    if(localStorage.getItem('userId')){
+    if (localStorage.getItem('userId')) {
       this.userData = {
-        email:localStorage.getItem('userEmail'),
+        email: localStorage.getItem('userEmail'),
         id: localStorage.getItem('userId'),
         login: localStorage.getItem('userLogin'),
         name: localStorage.getItem('userName'),
@@ -194,27 +207,50 @@ export default defineComponent({
       }
     }
     console.log(this.userData);
-    axios
-        .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/general')
-        .then(response => {
-          this.info = response.data;
-        })
-        .catch(error => {
-          console.log(error);
-          this.errored = true;
-        })
-        .finally(() => (this.loading = false));
-
   },
   methods: {
-    showTime: function () {
-      this.showTables = true;
+    check: async function (i){
+      for (let j = 0; j < this.info.length; j++){
+        console.log('-' + this.info[j].timeOfReceipt);
+        console.log(('+' + i.toString() + ':00:00'))
+        console.log('Какое число ' + this.info[j].timeOfReceipt.localeCompare((i.toString() + ':00:00')) )
+        if(this.info[j].timeOfReceipt.localeCompare((i.toString() + ':00:00')) === 0)
+        {
+          return true;
+        }
+      }
+      return false;
+    },
+    getInfo: async function (date){
+      console.log(date);
+      console.log(this.doctor.id);
+      var postdata = new URLSearchParams();
+
+      postdata.append('id', this.doctor.id);
+      postdata.append('date', date);
+
+      axios.post('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/appointmentFreeSlots',
+      postdata)
+          .then((response) => {
+            this.info = response.data;
+            console.log(this.info);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      return true;
+    },
+    showTime: async function (timeDate) {
+
+      this.clickedButton = true;
+      await this.getInfo(timeDate);
+      console.log(this.info[0])
     },
     getData: async function(url,config, vm){
       return axios.post(url,{}, {auth: config})
           .then(function (response) {
             vm.userData = response.data;
-            console.log(response)
+            console.log(response);
           })
           .catch(function (error) {
             vm.status = error;
