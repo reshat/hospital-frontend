@@ -124,6 +124,7 @@ import {
 } from '@ant-design/icons-vue';
 import {defineComponent, reactive, ref} from 'vue';
 import axios from 'axios';
+import router from "@/router";
 
 
 export default defineComponent({
@@ -186,7 +187,7 @@ export default defineComponent({
       localStorage.setItem('doctorNameAppoint',name);
       localStorage.setItem('doctorSpecAppoint',spec);
       localStorage.setItem('doctorExpAppoint',exp);
-      window.location.href = '/appoint'
+      router.push('/appoint');
     },
     getData: async function(url,config, vm){
       return axios.post(url,{}, {auth: config})
