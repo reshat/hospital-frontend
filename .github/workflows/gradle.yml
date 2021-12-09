@@ -26,7 +26,7 @@ jobs:
         if: steps.build.outcome == 'success'
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
-         image: reshatsultan/hospital
+         image: reshatsultan/hospital-frontend
          tags: latest
          registry: docker.io
          username: ${{ secrets.DOCKER_USERNAME }}
