@@ -105,7 +105,7 @@
             </div>
           </a-card>
 
-          <a-card style="width: 90%; margin: 12px;" >
+          <a-card style="width: 70%; margin: 12px;" >
             <div style="margin: 12px; text-align: left;-moz-text-align-last: left; text-align-last: left;">
               <strong style = " margin-right: 12px ">Часы приема: </strong>
               <a-popover placement="bottom">
@@ -118,20 +118,136 @@
                 </template>
                 <a-button>Выбор даты </a-button>
               </a-popover>
-            </div>
-            <div v-if="clickedButton">
-              <div v-for="i in 12" :key = i >
-                <a-button v-if = "check(8+i) === true" style = "margin:12px; display: inline-block; width: 23%; background-color: aquamarine" type="default" @click="showModal">
-                  {{8 + i}}.00
-                </a-button>
-                <a-button v-else style = "margin:12px; display: inline-block; width: 23%; background-color: gray" type="default" @click="showModal">
-                  {{8 + i}}.00
-                </a-button>
-                <a-modal v-model:visible="visible" >
-                      <p>Вы хотите записаться в это время?</p>
-                </a-modal>
+              <div v-show="showAlert">
+                <a-alert message="Success Text" type="success" />
               </div>
             </div>
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(8) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 8)">
+                    8.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                    8.00
+                  </a-button>
+                </div>
+                <div style="display: inline-block;">
+                    <a-button v-if = "check(9) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 9)">
+                      9.00
+                    </a-button>
+                    <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                      9.00
+                    </a-button>
+                  </div>
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(10) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 10)">
+                    10.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                    10.00
+                  </a-button>
+                  </div>
+
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(11) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 11)">
+                    11.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                    11.00
+                  </a-button>
+                </div>
+
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(12) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 12)">
+                    12.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                    12.00
+                  </a-button>
+                </div>
+
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(13) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 13)">
+                    13.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" >
+                    13.00
+                  </a-button>
+                </div>
+
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(14) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 14)">
+                    14.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                    14.00
+                  </a-button>
+                </div>
+
+
+
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(15) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 15)">
+                    15.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                    15.00
+                  </a-button>
+                </div>
+
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(16) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 16)">
+                    16.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                    16.00
+                  </a-button>
+                </div>
+
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(17) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 17)">
+                    17.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                    17.00
+                  </a-button>
+
+                </div>
+
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(18) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 18)">
+                    18.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                    18.00
+                  </a-button>
+                  <a-modal  v-model:visible="visible"  @ok = "sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 18)" >
+                    <p>Вы хотите записаться в 18.00?</p>
+                  </a-modal>
+                </div>
+
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(19) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 19)">
+                    19.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                    19.00
+                  </a-button>
+                  <a-modal  v-model:visible="visible"  @ok = "sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 19)" >
+                    <p>Вы хотите записаться в 19.00?</p>
+                  </a-modal>
+                </div>
+
+                <div style="display: inline-block;">
+                  <a-button v-if = "check(20) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 20)">
+                    20.00
+                  </a-button>
+                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
+                    20.00
+                  </a-button>
+                  <a-modal v-model:visible="visible"  @ok = "sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 20)" >
+                    <p>Вы хотите записаться в 20.00?</p>
+                  </a-modal>
+                </div>
           </a-card>
         </div>
       </a-layout-content>
@@ -172,6 +288,7 @@ export default defineComponent({
       selectedKeys: ref(['1']),
       doctor: null,
       clickedButton: false,
+      showAlert: false
     };
   },
   created() {
@@ -182,7 +299,7 @@ export default defineComponent({
       exp: localStorage.getItem('doctorExpAppoint')
     }
   },
-  async mounted() {
+  mounted() {
     if (localStorage.getItem('userRole') == undefined) {
       localStorage.setItem('userRole', 'none');
     }
@@ -209,12 +326,34 @@ export default defineComponent({
     console.log(this.userData);
   },
   methods: {
-    check: async function (i){
+    sendAppoint: function (date, time) {
+      var postdata = new URLSearchParams();
+
+      postdata.append('doctor_id', this.doctor.id);
+      postdata.append('patient_id', this.userData.id);
+      postdata.append('date_of_receipt', date);
+      postdata.append('time_of_receipt', time + ':00:00');
+
+      var auth = new URLSearchParams();
+      auth.append('username', this.authorizationBasic.username);
+      auth.append('password', this.authorizationBasic.password);
+      console.log(date);
+      console.log(time)
+      axios
+          .post('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/makeAnAppointment',
+              postdata, {
+            auth: this.authorizationBasic
+              })
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+    check: function (i){
       let a = false;
       for (let j = 0; j < this.info.length; j++){
-        console.log('-' + this.info[j].timeOfReceipt);
-        console.log(('+' + i.toString() + ':00:00'))
-        console.log('Какое число ' + this.info[j].timeOfReceipt.localeCompare((i.toString() + ':00:00')) )
         if(this.info[j].timeOfReceipt.localeCompare((i.toString() + ':00:00')) === 0)
         {
           a = true;
@@ -223,8 +362,6 @@ export default defineComponent({
       return a;
     },
     getInfo: async function (date){
-      console.log(date);
-      console.log(this.doctor.id);
       var postdata = new URLSearchParams();
 
       postdata.append('id', this.doctor.id);
@@ -245,7 +382,6 @@ export default defineComponent({
 
       this.clickedButton = true;
       await this.getInfo(timeDate);
-      console.log(this.info[0])
     },
     getData: async function(url,config, vm){
       return axios.post(url,{}, {auth: config})
