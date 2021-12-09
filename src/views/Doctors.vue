@@ -13,10 +13,16 @@
       <TeamOutlined />
       <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
     </a-menu-item>
-    <div v-show="this.role == 'PATIENT'">
+    <div v-show="this.role === ('PATIENT')">
       <a-menu-item key="3">
         <CalendarOutlined />
         <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
+      </a-menu-item>
+    </div>
+    <div v-show="this.role === 'DOCTOR'">
+      <a-menu-item key="3">
+        <CalendarOutlined />
+        <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>
       </a-menu-item>
     </div>
   </a-menu>
@@ -77,22 +83,6 @@
       </div>
     </div>
     <span style="float: right; margin-right: 16px; margin-left: 16px ">Горячая линия: +7 962 72 73 773</span>
-    <div class="certain-category-search-wrapper" style="width: 300px; margin-left: 15px">
-      <a-auto-complete
-          v-model:value="value"
-          class="certain-category-search"
-          dropdown-class-name="certain-category-search-dropdown"
-          :dropdown-match-select-width="false"
-          :dropdown-style="{ width: '300px' }"
-          size="large"
-          style="width: 100%"
-          option-label-prop="value"
-      >
-        <a-input placeholder="Введите поисковый запрос">
-          <template #suffix><search-outlined class="certain-category-icon" /></template>
-        </a-input>
-      </a-auto-complete>
-    </div>
   </a-layout-header>
   <a-layout-content style="margin: 0 16px">
     <a-breadcrumb style="margin: 16px 0">
@@ -109,8 +99,7 @@
               <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.surname + ' ' + post.name + ' ' + post.patronymic}}</p>
               <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.specialization}}</p>
               <p style="margin: 12px; display: flex; align-items: flex-start"> Опыт работы(в годах): {{post.work_experiences}}</p>
-              <div v-show="this.role == 'PATIENT'"><p><a-button type="link">Записаться на прием</a-button></p></div>
-
+              <div v-show="this.role == 'PATIENT'"><p><a-button @click = "takeDoctorData(post.id,post.surname + ' ' + post.name + ' ' + post.patronymic, post.specialization, post.work_experiences )" type="link" >Записаться на прием</a-button></p></div>
             </div>
 
 
@@ -130,7 +119,6 @@ import {
   CalendarOutlined,
   HomeOutlined,
   LockOutlined,
-  SearchOutlined,
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue';
@@ -143,7 +131,6 @@ export default defineComponent({
     CalendarOutlined,
     HomeOutlined,
     LockOutlined,
-    SearchOutlined,
     TeamOutlined,
     UserOutlined,
   },
@@ -194,6 +181,13 @@ export default defineComponent({
 
   },
   methods: {
+    takeDoctorData: function (id, name, spec, exp,){
+      localStorage.setItem('doctorIdAppoint',id);
+      localStorage.setItem('doctorNameAppoint',name);
+      localStorage.setItem('doctorSpecAppoint',spec);
+      localStorage.setItem('doctorExpAppoint',exp);
+      window.location.href = '/appoint'
+    },
     getData: async function(url,config, vm){
       return axios.post(url,{}, {auth: config})
           .then(function (response) {
@@ -246,9 +240,7 @@ export default defineComponent({
         this.$refs.header.innerText = "Неверный логин или пароль";
       }
       if (this.authorizationBasic !== undefined) {
-        if (this.userData.role == 'PATIENT') {
           this.role = localStorage.getItem('userRole');
-        }
       }
     },
 
@@ -313,27 +305,6 @@ export default defineComponent({
 [data-theme='dark'] .site-layout .site-layout-background {
   background: #141414;
 }
-.certain-category-search-dropdown .ant-select-dropdown-menu-item-group-title {
-  color: #666;
-  font-weight: bold;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu-item-group {
-  border-bottom: 1px solid #f6f6f6;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu-item {
-  padding-left: 16px;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu-item.show-all {
-  text-align: center;
-  cursor: default;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu {
-  max-height: 300px;
-}
 </style>
 
 
@@ -356,26 +327,5 @@ li {
 
 a {
   color: black;
-}
-.certain-category-search-wrapper
-:deep(.certain-category-search.ant-select-auto-complete)
-.ant-input-affix-wrapper
-.ant-input-suffix {
-  right: 12px;
-}
-.certain-category-search-wrapper :deep(.certain-search-item-count) {
-  position: absolute;
-  color: #999;
-  right: 16px;
-}
-.certain-category-search-wrapper
-:deep(.certain-category-search.ant-select-focused)
-.certain-category-icon {
-  color: #108ee9;
-}
-.certain-category-search-wrapper :deep(.certain-category-icon) {
-  color: #6e6e6e;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  font-size: 16px;
 }
 </style>

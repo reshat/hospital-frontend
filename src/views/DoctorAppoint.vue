@@ -13,15 +13,15 @@
           <TeamOutlined />
           <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
         </a-menu-item>
-        <div v-show=" (this.role === 'PATIENT')">
+        <div v-show="this.role === ('PATIENT')">
           <a-menu-item key="3">
             <CalendarOutlined />
             <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
           </a-menu-item>
         </div>
         <div v-show="this.role === 'DOCTOR'">
-          <a-menu-item key="4">
-            <CheckSquareOutlined />
+          <a-menu-item key="3">
+            <CalendarOutlined />
             <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>
           </a-menu-item>
         </div>
@@ -33,7 +33,7 @@
           <div :style="{ clear: 'both', whiteSpace: 'nowrap' }">
             <a-popover placement="bottomRight" >
               <template #content >
-                <div v-if="authorizationBasic == null || undefined">
+                <div v-if="authorizationBasic == null">
                   <a-button type="link" @click="showModal">Войти</a-button>
                   <a-modal v-model:visible="visible"  @ok="handleOk" style="text-align: center" :footer="null">
                     <p><strong> Войти </strong></p>
@@ -53,24 +53,25 @@
                         </a-input>
                       </a-form-item>
                       <a-form-item style ="margin: 14px">
-                      <p ref="header" style="color: crimson; font-size: 14px; margin: 0px">  </p>
+                        <p ref="header" style="color: crimson; font-size: 14px; margin: 0px">  </p>
                       </a-form-item>
                       <a-form-item>
                         <a-button
-                            v-on:click="autorization(formState);"
+                            v-on:click="autorization(formState)"
                             type="primal" block
                             html-type="submit"
                             :disabled="formState.user === '' || formState.password === ''"
                         >
                           Войти
                         </a-button>
-                        <a-button type="link" href = "/register" style = "margin-top: 12px" ><strong>Зарегистрироваться</strong></a-button>
+                        <a-button type="link" style = "margin-top: 12px"><strong>Зарегистрироваться</strong></a-button>
                       </a-form-item>
                     </a-form>
                   </a-modal>
                 </div>
+
                 <div v-else>
-                  <p>Добро пожаловать, {{this.userData.name}} </p>
+                  <p>Добро пожаловать, {{userData.name}} !</p>
                   <p v-if="userData.role == 'DOCTOR'">Ваша роль:  Доктор </p>
                   <p v-if="userData.role == 'ADMIN'">Ваша роль:  Админ </p>
                   <p v-if="userData.role == 'PATIENT'">Ваша роль:  Пациент </p>
@@ -85,10 +86,30 @@
       </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> {{info.header}}</a-breadcrumb-item>
+          <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> </a-breadcrumb-item>
         </a-breadcrumb>
         <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
-          <span>  {{info.text}} </span>
+          <div style="max-width: 155px">
+            <a-dropdown >
+              <a-button @click.prevent>
+                Выбрать пациента
+                <DownOutlined />
+              </a-button>
+              <template #overlay>
+                <a-menu style="max-width: 400px">
+                  <a-menu-item>
+                    <a href="javascript:;">1st menu item</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a href="javascript:;">2nd menu item</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a href="javascript:;">3rd menu item</a>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </div>
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -99,26 +120,29 @@
 </template>
 
 <script>
+
 import {
   CalendarOutlined,
   HomeOutlined,
   LockOutlined,
   TeamOutlined,
   UserOutlined,
-  CheckSquareOutlined,
+  DownOutlined,
 } from '@ant-design/icons-vue';
 import {defineComponent, reactive, ref} from 'vue';
 import axios from 'axios';
 
+
 export default defineComponent({
   components: {
-    HomeOutlined,
-    TeamOutlined,
     CalendarOutlined,
-    UserOutlined,
+    HomeOutlined,
     LockOutlined,
-    CheckSquareOutlined,
+    TeamOutlined,
+    UserOutlined,
+    DownOutlined,
   },
+
   data() {
     return {
       role: localStorage.getItem('userRole'),
@@ -151,7 +175,6 @@ export default defineComponent({
       }
     }
     console.log(this.userData);
-
     axios
         .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/general')
         .then(response => {
@@ -162,8 +185,8 @@ export default defineComponent({
           this.errored = true;
         })
         .finally(() => (this.loading = false));
-  },
 
+  },
   methods: {
     getData: async function(url,config, vm){
       return axios.post(url,{}, {auth: config})
@@ -225,7 +248,7 @@ export default defineComponent({
       this.authorizationBasic = undefined;
       this.userData = undefined;
       localStorage.clear();
-      window.location.reload();
+      window.location.href = '/'
       console.log(this.authorizationBasic);
     }
   },
@@ -236,10 +259,10 @@ export default defineComponent({
     const showModal = () => {
       visible.value = true;
     }
-      const handleOk = e => {
-        console.log(e);
-        visible.value = false;
-      };
+    const handleOk = e => {
+      console.log(e);
+      visible.value = false;
+    };
 
     const formState = reactive({
       user: '',
@@ -268,15 +291,6 @@ export default defineComponent({
 </script>
 
 <style>
-
-#components-popover-demo-placement .ant-btn {
-  width: 30px;
-  text-align: center;
-  padding: 0;
-  margin-right: 8px;
-  margin-bottom: 8px;
-}
-
 .boxing {
   font-size: medium;
   text-align: justify;
@@ -288,6 +302,7 @@ export default defineComponent({
   margin: 16px;
   background: rgba(255, 255, 255, 255.3);
 }
+
 .site-layout .site-layout-background {
   background: #fff;
 }
@@ -303,16 +318,18 @@ export default defineComponent({
 h3 {
   margin: 0px 0 0;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
   color: black;
 }
-
 </style>

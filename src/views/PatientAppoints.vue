@@ -13,10 +13,16 @@
           <TeamOutlined />
           <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
         </a-menu-item>
-        <div v-show="this.role == 'PATIENT'">
+        <div v-show="this.role === 'PATIENT'">
           <a-menu-item key="3">
             <CalendarOutlined />
             <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
+          </a-menu-item>
+        </div>
+        <div v-show="this.role === 'DOCTOR'">
+          <a-menu-item key="3">
+            <CalendarOutlined />
+            <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>
           </a-menu-item>
         </div>
       </a-menu>
@@ -77,40 +83,27 @@
           </div>
         </div>
         <span style="float: right; margin-right: 16px; margin-left: 16px ">Горячая линия: +7 962 72 73 773</span>
-        <div class="certain-category-search-wrapper" style="width: 300px; margin-left: 15px">
-          <a-auto-complete
-              v-model:value="value"
-              class="certain-category-search"
-              dropdown-class-name="certain-category-search-dropdown"
-              :dropdown-match-select-width="false"
-              :dropdown-style="{ width: '300px' }"
-              size="large"
-              style="width: 100%"
-              option-label-prop="value"
-          >
-            <a-input placeholder="Введите поисковый запрос">
-              <template #suffix><search-outlined class="certain-category-icon" /></template>
-            </a-input>
-          </a-auto-complete>
-        </div>
       </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
           <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> </a-breadcrumb-item>
         </a-breadcrumb>
-        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
+        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px'}">
           <p style="margin: 12px"><strong>Записи</strong></p>
-          <a-card  style="margin: 12px; width: 650px; border-color: #141414; border-width: 3px" v-for="appoint in info" :key="appoint">
-            <div style="display: inline-block;">
-              <div style="border: 2px solid black; margin: 12px;display: inline-block; " :style="{ padding: '24px', background: '#fff', minHeight: '10px', textJustify: justify}">
-                <span style="margin: 12px;">card content</span>
+          <a-card  style="margin: 12px; width: 650px;" v-for="appoint in info" :key="appoint">
+            <div style="display: inline-block;margin-left: 12px; margin-right: 12px">
+              <div style="display: inline-block; margin-right: 12px">
+                <span > <small> Доктор:  <span style="color: #108ee9"> {{appoint.name + ' ' + appoint.surname + ' ' + appoint.patronymic }} </span> </small></span>
               </div>
-              <div style="border: 2px solid black; margin: 12px;display: inline-block;" :style="{ padding: '24px', background: '#fff', minHeight: '10px', textJustify: justify}">
-                <span style="margin: 12px;">card content</span>
+              <div style="display: inline-block; margin-left: 12px; margin-right: 12px">
+                <span> <small> Дата: <span style="color: #108ee9"> {{appoint.dateOfReceipt}} </span> </small></span>
               </div>
             </div>
-            <div style="display: flex; align-items: flex-start;border: 2px solid black;">
-              <p>{{appoint.name}}</p>
+            <div style="margin: 12px;">
+              <p> <small> Запись: </small> </p>
+              <a-card style="width: 550px">
+                <p style = "text-align-all: left; text-align: right; -moz-text-align-last: left; text-align-last: left;"> <small> {{appoint.record}}</small> </p>
+              </a-card>
             </div>
           </a-card>
         </div>
@@ -128,7 +121,6 @@ import {
   CalendarOutlined,
   HomeOutlined,
   LockOutlined,
-  SearchOutlined,
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue';
@@ -137,11 +129,18 @@ import axios from 'axios';
 
 
 export default defineComponent({
+  computed: {
+    axiosParams() {
+      const params = new URLSearchParams();
+      params.append('username', localStorage.getItem('loginData'));
+      params.append('password', localStorage.getItem('passwordData'));
+      return params;
+    }
+  },
   components: {
     CalendarOutlined,
     HomeOutlined,
     LockOutlined,
-    SearchOutlined,
     TeamOutlined,
     UserOutlined,
   },
@@ -178,19 +177,23 @@ export default defineComponent({
       }
     }
     console.log(this.userData.id);
-    axios
-        .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/viewRecords?id=' + this.userData.id, {auth: this.authorizationBasic})
-        .then(response => {
-          this.info = response.data;
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-          this.errored = true;
-        })
-        .finally(() => (this.loading = false));
+
+    this.getAppoint();
   },
   methods: {
+    getAppoint: function (){
+      return  axios
+          .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/viewRecords?id=' + this.userData.id, {auth: this.authorizationBasic})
+          .then(response => {
+            this.info = response.data;
+            console.log(response);
+          })
+          .catch(error => {
+            console.log(error);
+            this.errored = true;
+          })
+          .finally(() => (this.loading = false));
+    },
     getRole: function (){
       return this.userData.role;
     },
@@ -245,9 +248,7 @@ export default defineComponent({
         this.$refs.header.innerText = "Неверный логин или пароль";
       }
       if (this.authorizationBasic !== undefined) {
-        if (this.userData.role == 'PATIENT') {
           this.role = localStorage.getItem('userRole');
-        }
       }
     },
 
@@ -299,12 +300,6 @@ export default defineComponent({
 </script>
 
 <style>
-.boxing {
-  font-size: medium;
-  text-align: justify;
-  -moz-text-align-last: justify;
-  text-align-last: justify;
-}
 #components-layout-demo-side .logo {
   height: 16px;
   margin: 16px;
@@ -316,27 +311,6 @@ export default defineComponent({
 }
 [data-theme='dark'] .site-layout .site-layout-background {
   background: #141414;
-}
-.certain-category-search-dropdown .ant-select-dropdown-menu-item-group-title {
-  color: #666;
-  font-weight: bold;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu-item-group {
-  border-bottom: 1px solid #f6f6f6;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu-item {
-  padding-left: 16px;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu-item.show-all {
-  text-align: center;
-  cursor: default;
-}
-
-.certain-category-search-dropdown .ant-select-dropdown-menu {
-  max-height: 300px;
 }
 </style>
 
@@ -360,26 +334,5 @@ li {
 
 a {
   color: black;
-}
-.certain-category-search-wrapper
-:deep(.certain-category-search.ant-select-auto-complete)
-.ant-input-affix-wrapper
-.ant-input-suffix {
-  right: 12px;
-}
-.certain-category-search-wrapper :deep(.certain-search-item-count) {
-  position: absolute;
-  color: #999;
-  right: 16px;
-}
-.certain-category-search-wrapper
-:deep(.certain-category-search.ant-select-focused)
-.certain-category-icon {
-  color: #108ee9;
-}
-.certain-category-search-wrapper :deep(.certain-category-icon) {
-  color: #6e6e6e;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  font-size: 16px;
 }
 </style>

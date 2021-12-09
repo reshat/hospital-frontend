@@ -3,6 +3,8 @@ import Main from '@/views/Main.vue'
 import Doctors from '@/views/Doctors'
 import Appoint from "@/views/Appoint";
 import PatientAppoints from "@/views/PatientAppoints";
+import DoctorAppoint from "@/views/DoctorAppoint";
+import register from "@/views/register";
 
 const routes = [
   {
@@ -20,6 +22,14 @@ const routes = [
   {
     path: '/appoint',
     component: Appoint
+  },
+  {
+    path: '/doctorAppoint',
+    component: DoctorAppoint
+  },
+  {
+    path: '/register',
+    component: register
   }
 ]
 
