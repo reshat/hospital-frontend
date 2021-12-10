@@ -70,10 +70,14 @@
 <script>
 import { defineComponent, reactive, } from 'vue';
 import axios from "axios";
+import router from "@/router";
 
 
 export default defineComponent({
       methods: {
+        toRegisterPage: function (){
+          router.push('/register');
+        },
         register: async function (formState) {
           var postdata = new URLSearchParams();
 
