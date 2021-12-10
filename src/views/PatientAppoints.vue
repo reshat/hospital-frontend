@@ -261,7 +261,7 @@ export default defineComponent({
       this.authorizationBasic = undefined;
       this.userData = undefined;
       localStorage.clear();
-      window.location.href = '/'
+      router.push('/');
       console.log(this.authorizationBasic);
     }
   },
