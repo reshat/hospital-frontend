@@ -2,7 +2,7 @@
   <a-layout-sider class="background" style="background: white">
     <div class="logo" />
     <a-menu theme="light" mode="inline"  style = "margin-top: 24px">
-      <img src="..\components\1863367.png" width="50" height="50" style="margin: 2px; margin-left:5px">
+      <img src="..\assets\1863367.png" width="50" height="50" style="margin: 2px; margin-left:5px">
       <span style="color: black; font-size: 12px; margin-left: 5px">Городская больница №1</span>
       <a-menu-item key="1">
         <HomeOutlined />
