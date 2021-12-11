@@ -51,7 +51,7 @@
         </a-popover>
       </div>
     </div>
-    <span style="float: right; margin-right: 16px; margin-left: 16px ">Горячая линия: +7 962 72 73 773</span>
+    <p  style="float: right; margin-right: 16px; margin-left: 16px; font-family: Open Sans,serif ">Горячая линия: <span style="color: #108ee9"> +7 962 72 73 773 </span> </p>
   </a-layout-header>
 </template>
 

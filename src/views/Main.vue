@@ -7,7 +7,7 @@
         <a-breadcrumb class = "title" style="margin: 16px 0">
           <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify; font-family: Eras Bold ITC,serif"> {{info.header}}</a-breadcrumb-item>
         </a-breadcrumb>
-        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '80%'}">
+        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '90%'}">
           <span>  {{info.text}} </span>
         </div>
       </a-layout-content>
@@ -39,30 +39,6 @@ export default defineComponent({
     };
   },
   mounted() {
-    if(localStorage.getItem('userRole') == undefined){
-      localStorage.setItem('userRole', 'none');
-    }
-    if(localStorage.getItem('loginData')){
-      this.authorizationBasic = {
-        username: localStorage.getItem('loginData'),
-        password: localStorage.getItem('passwordData')
-      }
-    }
-    console.log(this.authorizationBasic);
-    if(localStorage.getItem('userId')){
-      this.userData = {
-        email:localStorage.getItem('userEmail'),
-        id: localStorage.getItem('userId'),
-        login: localStorage.getItem('userLogin'),
-        name: localStorage.getItem('userName'),
-        password: localStorage.getItem('userPassword'),
-        patronymic: localStorage.getItem('userPatronymic'),
-        role: localStorage.getItem('userRole'),
-        surname: localStorage.getItem('userSurname')
-      }
-    }
-    console.log(this.userData);
-
     axios
         .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/general')
         .then(response => {
