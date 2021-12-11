@@ -160,6 +160,7 @@ export default {
         this.status = localStorage.getItem('status');
         this.visible = false;
         this.$refs.header.innerText = "";
+        this.$emit('update', this.userData.role);
       } else {
         this.authorizationBasic = undefined;
         this.userData = undefined;
@@ -180,7 +181,6 @@ export default {
         this.status = localStorage.getItem('status');
 
       }
-
     },
 
     exitAccount: function () {
