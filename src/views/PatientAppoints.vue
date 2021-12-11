@@ -64,7 +64,7 @@
                         >
                           Войти
                         </a-button>
-                        <a-button type="link" style = "margin-top: 12px"><strong>Зарегистрироваться</strong></a-button>
+                        <a-button @click = "toRegisterPage()" type="link" style = "margin-top: 12px"><strong>Зарегистрироваться</strong></a-button>
                       </a-form-item>
                     </a-form>
                   </a-modal>
@@ -126,6 +126,7 @@ import {
 } from '@ant-design/icons-vue';
 import {defineComponent, reactive, ref} from 'vue';
 import axios from 'axios';
+import router from "@/router";
 
 
 export default defineComponent({
@@ -181,6 +182,9 @@ export default defineComponent({
     this.getAppoint();
   },
   methods: {
+    toRegisterPage: function (){
+      router.push('/register');
+    },
     getAppoint: function (){
       return  axios
           .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/viewRecords?id=' + this.userData.id, {auth: this.authorizationBasic})
@@ -257,7 +261,7 @@ export default defineComponent({
       this.authorizationBasic = undefined;
       this.userData = undefined;
       localStorage.clear();
-      window.location.href = '/'
+      router.push('/');
       console.log(this.authorizationBasic);
     }
   },
