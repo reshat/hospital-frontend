@@ -2,7 +2,7 @@
 <a-layout style="min-height: 100vh; background: white">
   <SidePanel :role="this.role"></SidePanel>
 <a-layout>
-  <Header style="margin-left: 12px"></Header>
+  <Header @update = "updateRole" style="margin-left: 12px"></Header>
   <a-layout-content style="margin: 0 16px">
     <a-breadcrumb style="margin: 16px 0">
       <a-breadcrumb-item style="font-size: large; font-weight:bold "> Список докторов </a-breadcrumb-item>
@@ -72,6 +72,9 @@ export default defineComponent({
         .finally(() => (this.loading = false));
   },
   methods: {
+    updateRole: function (role){
+      this.role = role;
+    },
     takeDoctorData: function (id, name, spec, exp,){
       localStorage.setItem('doctorIdAppoint',id);
       localStorage.setItem('doctorNameAppoint',name);

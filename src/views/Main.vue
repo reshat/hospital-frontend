@@ -2,7 +2,7 @@
   <a-layout class = "sidepanel" style="min-height: 100vh; background: white">
     <SidePanel :role="this.role"></SidePanel>
     <a-layout>
-      <Header style="margin-left: 12px"></Header>
+      <Header @update = "updateRole" style="margin-left: 12px"></Header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb class = "title" style="margin: 16px 0">
           <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify; font-family: Eras Bold ITC,serif"> {{info.header}}</a-breadcrumb-item>
@@ -38,6 +38,9 @@ export default defineComponent({
       info: []
     };
   },
+  created() {
+    this.role = localStorage.getItem('userRole');
+  },
   mounted() {
     axios
         .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/general')
@@ -52,6 +55,9 @@ export default defineComponent({
   },
 
   methods: {
+    updateRole: function (role){
+      this.role = role;
+    },
     getData: async function(url,config, vm){
       return axios.post(url,{}, {auth: config})
           .then(function (response) {
@@ -69,61 +75,25 @@ export default defineComponent({
 </script>
 
 <style>
-
-#components-popover-demo-placement .ant-btn {
-  width: 30px;
-  text-align: center;
-  padding: 0;
-  margin-right: 8px;
-  margin-bottom: 8px;
-}
-
 .boxing {
   font-size: medium;
   text-align: right;
   -moz-text-align-last: right;
   text-align-last: right;
 }
-#components-layout-demo-side .logo {
-  height: 16px;
-  margin: 16px;
-  background: rgba(255, 255, 255, 255.3);
-}
-.site-layout .site-layout-background {
-  background: #fff;
-}
-[data-theme='dark'] .site-layout .site-layout-background {
-  background: #141414;
-}
-</style>
-
-
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 0px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: black;
-}
-
 .title {
   border-radius: 50px;
   background: #edf0f2;
   box-shadow:  5px 5px 10px #b4b6b8,
-  -5px -5px 10px #ffffff;;
+  -5px -5px 10px #ffffff;
 }
 
 .sidepanel {
   font-family: 'Open Sans',serif;
 }
 </style>
+
+
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+

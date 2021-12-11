@@ -37,6 +37,7 @@
                 </template>
                 <a-button>Выбор даты </a-button>
               </a-popover>
+
             </div>
                 <div style="display: inline-block;">
                   <a-button v-if = "check(8) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 8)">
@@ -200,6 +201,7 @@ export default defineComponent({
       selectedKeys: ref(['1']),
       doctor: null,
       clickedButton: false,
+      error: ''
     };
   },
   created() {
@@ -233,6 +235,7 @@ export default defineComponent({
             console.log(response.data)
           })
           .catch(error => {
+            this.error = error.response.data;
             console.log(error.response.data)
           })
 
