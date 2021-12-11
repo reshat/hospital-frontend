@@ -4,7 +4,7 @@
       <div :style="{ clear: 'both', whiteSpace: 'nowrap' }">
         <a-popover placement="bottomRight" class="popover" >
           <template #content >
-            <div v-if="this.status === 'none'">
+            <div v-if="this.authorizationBasic == null">
               <a-button type="link" @click="showModal">Войти</a-button>
               <a-modal v-model:visible="visible"  @ok="handleOk" style="text-align: center" :footer="null" class="modal">
                 <p><strong> Войти </strong></p>
@@ -39,8 +39,8 @@
                 </a-form>
               </a-modal>
             </div>
-            <div v-else-if="this.status === 'defined'">
-              <p>Добро пожаловать, {{localStorage.getItem('userName')}} </p>
+            <div v-else>
+              <p>Добро пожаловать, {{this.userData.name}} </p>
               <p v-if="userData.role === 'DOCTOR'">Ваша роль:  Доктор </p>
               <p v-if="userData.role === 'ADMIN'">Ваша роль:  Админ </p>
               <p v-if="userData.role === 'PATIENT'">Ваша роль:  Пациент </p>
@@ -77,8 +77,27 @@ export default {
     };
   },
   mounted() {
-    if(localStorage.getItem('status') === undefined){
-      localStorage.setItem('status', 'none');
+    if(localStorage.getItem('userRole') === undefined){
+      localStorage.setItem('userRole', 'none');
+    }
+    if(localStorage.getItem('loginData')){
+      this.authorizationBasic = {
+        username: localStorage.getItem('loginData'),
+        password: localStorage.getItem('passwordData')
+      }
+    }
+    console.log(this.authorizationBasic);
+    if(localStorage.getItem('userId')){
+      this.userData = {
+        email:localStorage.getItem('userEmail'),
+        id: localStorage.getItem('userId'),
+        login: localStorage.getItem('userLogin'),
+        name: localStorage.getItem('userName'),
+        password: localStorage.getItem('userPassword'),
+        patronymic: localStorage.getItem('userPatronymic'),
+        role: localStorage.getItem('userRole'),
+        surname: localStorage.getItem('userSurname')
+      }
     }
   },
   methods: {
@@ -158,7 +177,6 @@ export default {
 
       }
 
-      this.authorizationBasic = undefined;
     },
 
     exitAccount: function () {
