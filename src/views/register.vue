@@ -75,9 +75,6 @@ import router from "@/router";
 
 export default defineComponent({
       methods: {
-        toRegisterPage: function (){
-          router.push('/register');
-        },
         register: async function (formState) {
           var postdata = new URLSearchParams();
 
@@ -92,6 +89,7 @@ export default defineComponent({
               .post('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/signup',postdata)
               .then(response => {
                 console.log(response.data);
+                router.push('/');
               })
               .catch(error => {
                 console.log(formState)

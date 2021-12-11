@@ -1,94 +1,14 @@
 <template>
-  <a-layout style="min-height: 100vh; background: white">
-    <a-layout-sider style="background: white">
-      <div class="logo" />
-      <a-menu theme="light" mode="inline"  >
-        <img src="https://user-images.githubusercontent.com/1532675/139324825-8b20b805-b192-429c-8d07-9bc060829957.png" width="50" height="50" style="margin: 2px; margin-left:5px">
-        <span style="color: black; font-size: 12px; margin-left: 5px">Городская больница №1</span>
-        <a-menu-item key="1">
-          <HomeOutlined />
-          <span> <router-link to="/"> Главная </router-link>    </span>
-        </a-menu-item>
-        <a-menu-item key="2">
-          <TeamOutlined />
-          <span> <router-link to="/doctors"> Наши доктора </router-link>    </span>
-        </a-menu-item>
-        <div v-show=" (this.role === 'PATIENT')">
-          <a-menu-item key="3">
-            <CalendarOutlined />
-            <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
-          </a-menu-item>
-        </div>
-        <div v-show="this.role === 'DOCTOR'">
-          <a-menu-item key="4">
-            <CheckSquareOutlined />
-            <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>
-          </a-menu-item>
-        </div>
-      </a-menu>
-    </a-layout-sider>
+  <a-layout class = "sidepanel" style="min-height: 100vh; background: white">
+    <SidePanel :role="this.role"></SidePanel>
     <a-layout>
-      <a-layout-header style="background: #fff; padding: 0;" >
-        <div id="components-popover-demo-placement" style="float: right; margin: 2px" >
-          <div :style="{ clear: 'both', whiteSpace: 'nowrap' }">
-            <a-popover placement="bottomRight" >
-              <template #content >
-                <div v-if="authorizationBasic == null || undefined">
-                  <a-button type="link" @click="showModal">Войти</a-button>
-                  <a-modal v-model:visible="visible"  @ok="handleOk" style="text-align: center" :footer="null">
-                    <p><strong> Войти </strong></p>
-                    <a-form
-                        :model="formState"
-                        @finish="handleFinish"
-                        @finishFailed="handleFinishFailed"
-                    >
-                      <a-form-item>
-                        <a-input v-model:value="formState.user" placeholder="Username">
-                          <template #prefix><UserOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
-                        </a-input>
-                      </a-form-item>
-                      <a-form-item>
-                        <a-input v-model:value="formState.password" type="password" placeholder="Password">
-                          <template #prefix><LockOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
-                        </a-input>
-                      </a-form-item>
-                      <a-form-item style ="margin: 14px">
-                      <p ref="header" style="color: crimson; font-size: 14px; margin: 0px">  </p>
-                      </a-form-item>
-                      <a-form-item>
-                        <a-button
-                            v-on:click="autorization(formState);"
-                            type="primal" block
-                            html-type="submit"
-                            :disabled="formState.user === '' || formState.password === ''"
-                        >
-                          Войти
-                        </a-button>
-                        <a-button @click = "toRegisterPage()" type="link"  style = "margin-top: 12px" ><strong>Зарегистрироваться</strong></a-button>
-                      </a-form-item>
-                    </a-form>
-                  </a-modal>
-                </div>
-                <div v-else>
-                  <p>Добро пожаловать, {{this.userData.name}} </p>
-                  <p v-if="userData.role == 'DOCTOR'">Ваша роль:  Доктор </p>
-                  <p v-if="userData.role == 'ADMIN'">Ваша роль:  Админ </p>
-                  <p v-if="userData.role == 'PATIENT'">Ваша роль:  Пациент </p>
-                  <a-button type="link" @click="exitAccount()">Выйти</a-button>
-                </div>
-              </template>
-              <a-button shape="circle"><UserOutlined /></a-button>
-            </a-popover>
-          </div>
-        </div>
-        <span style="float: right; margin-right: 16px; margin-left: 16px ">Горячая линия: +7 962 72 73 773</span>
-      </a-layout-header>
+      <Header style="margin-left: 12px"></Header>
       <a-layout-content style="margin: 0 16px">
-        <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> {{info.header}}</a-breadcrumb-item>
+        <a-breadcrumb class = "title" style="margin: 16px 0">
+          <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify; font-family: Eras Bold ITC,serif"> {{info.header}}</a-breadcrumb-item>
         </a-breadcrumb>
-        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '200px', textJustify: justify}">
-          <div style="margin-left: 150px; margin-right: 150px; margin-top: 20px; "><span>  {{info.text}} </span> </div>
+        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '90%'}">
+          <span>  {{info.text}} </span>
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -99,26 +19,16 @@
 </template>
 
 <script>
-import {
-  CalendarOutlined,
-  HomeOutlined,
-  LockOutlined,
-  TeamOutlined,
-  UserOutlined,
-  CheckSquareOutlined,
-} from '@ant-design/icons-vue';
-import {defineComponent, reactive, ref} from 'vue';
+
+import {defineComponent, ref} from 'vue';
 import axios from 'axios';
-import router from "@/router";
+import SidePanel from "@/components/SidePanel";
+import Header from "@/components/Header";
 
 export default defineComponent({
   components: {
-    HomeOutlined,
-    TeamOutlined,
-    CalendarOutlined,
-    UserOutlined,
-    LockOutlined,
-    CheckSquareOutlined,
+    Header,
+    SidePanel,
   },
   data() {
     return {
@@ -129,30 +39,6 @@ export default defineComponent({
     };
   },
   mounted() {
-    if(localStorage.getItem('userRole') == undefined){
-      localStorage.setItem('userRole', 'none');
-    }
-    if(localStorage.getItem('loginData')){
-      this.authorizationBasic = {
-        username: localStorage.getItem('loginData'),
-        password: localStorage.getItem('passwordData')
-      }
-    }
-    console.log(this.authorizationBasic);
-    if(localStorage.getItem('userId')){
-      this.userData = {
-        email:localStorage.getItem('userEmail'),
-        id: localStorage.getItem('userId'),
-        login: localStorage.getItem('userLogin'),
-        name: localStorage.getItem('userName'),
-        password: localStorage.getItem('userPassword'),
-        patronymic: localStorage.getItem('userPatronymic'),
-        role: localStorage.getItem('userRole'),
-        surname: localStorage.getItem('userSurname')
-      }
-    }
-    console.log(this.userData);
-
     axios
         .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/general')
         .then(response => {
@@ -166,9 +52,6 @@ export default defineComponent({
   },
 
   methods: {
-    toRegisterPage: function (){
-      router.push('/register');
-    },
     getData: async function(url,config, vm){
       return axios.post(url,{}, {auth: config})
           .then(function (response) {
@@ -179,95 +62,9 @@ export default defineComponent({
             vm.status = error;
           });
     } ,
-    autorization: async function (formState) {
-      let vm = this;
-      vm.status = undefined;
-      let user = formState.user;
-      let pass = formState.password;
 
-      let url = 'http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/login';
-
-      this.authorizationBasic = {
-        username: user,
-        password: pass
-      }
-
-      await this.getData(url, this.authorizationBasic, vm);
-      console.log(this.userData)
-
-      if (vm.status === undefined) {
-        console.log('Done!');
-        localStorage.setItem('loginData', user);
-        localStorage.setItem('passwordData', pass);
-        localStorage.setItem('userEmail', this.userData.email);
-        localStorage.setItem('userId', this.userData.id);
-        localStorage.setItem('userLogin', this.userData.login);
-        localStorage.setItem('userName', this.userData.name);
-        localStorage.setItem('userPassword', this.userData.password);
-        localStorage.setItem('userPatronymic', this.userData.patronymic);
-        localStorage.setItem('userRole', this.userData.role);
-        localStorage.setItem('userSurname', this.userData.surname);
-      } else {
-        this.authorizationBasic = undefined;
-        this.userData = undefined;
-      }
-
-      if (this.authorizationBasic !== undefined) {
-        this.visible = false;
-        this.$refs.header.innerText = "";
-      } else {
-        this.visible = true;
-        this.$refs.header.innerText = "Неверный логин или пароль";
-      }
-      if (this.authorizationBasic !== undefined) {
-          this.role = localStorage.getItem('userRole');
-      }
-    },
-
-    exitAccount: function ()
-    {
-      this.authorizationBasic = undefined;
-      this.userData = undefined;
-      localStorage.clear();
-      router.push('/');
-      console.log(this.authorizationBasic);
-    }
   },
 
-  setup() {
-    const visible = ref(false);
-
-    const showModal = () => {
-      visible.value = true;
-    }
-      const handleOk = e => {
-        console.log(e);
-        visible.value = false;
-      };
-
-    const formState = reactive({
-      user: '',
-      password: '',
-    });
-
-    const handleFinish = values => {
-      console.log(values, formState);
-    };
-
-    const handleFinishFailed = errors => {
-      console.log(errors);
-    };
-
-    return {
-      buttonWidth: ref(70),
-      visible,
-      showModal,
-      handleOk,
-      formState,
-      handleFinish,
-      handleFinishFailed,
-    };
-  }
 });
 </script>
 
@@ -283,9 +80,9 @@ export default defineComponent({
 
 .boxing {
   font-size: medium;
-  text-align: justify;
-  -moz-text-align-last: justify;
-  text-align-last: justify;
+  text-align: right;
+  -moz-text-align-last: right;
+  text-align-last: right;
 }
 #components-layout-demo-side .logo {
   height: 16px;
@@ -319,4 +116,14 @@ a {
   color: black;
 }
 
+.title {
+  border-radius: 50px;
+  background: #edf0f2;
+  box-shadow:  5px 5px 10px #b4b6b8,
+  -5px -5px 10px #ffffff;;
+}
+
+.sidepanel {
+  font-family: 'Open Sans',serif;
+}
 </style>
