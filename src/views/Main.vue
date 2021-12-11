@@ -1,13 +1,13 @@
 <template>
-  <a-layout style="min-height: 100vh; background: white">
+  <a-layout class = "sidepanel" style="min-height: 100vh; background: white">
     <SidePanel :role="this.role"></SidePanel>
     <a-layout>
-      <Header></Header>
+      <Header style="margin-left: 12px"></Header>
       <a-layout-content style="margin: 0 16px">
-        <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> {{info.header}}</a-breadcrumb-item>
+        <a-breadcrumb class = "title" style="margin: 16px 0">
+          <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify; font-family: Eras Bold ITC,serif"> {{info.header}}</a-breadcrumb-item>
         </a-breadcrumb>
-        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
+        <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '80%'}">
           <span>  {{info.text}} </span>
         </div>
       </a-layout-content>
@@ -20,7 +20,7 @@
 
 <script>
 
-import {defineComponent, reactive, ref} from 'vue';
+import {defineComponent, ref} from 'vue';
 import axios from 'axios';
 import SidePanel from "@/components/SidePanel";
 import Header from "@/components/Header";
@@ -89,40 +89,6 @@ export default defineComponent({
 
   },
 
-  setup() {
-    const visible = ref(false);
-
-    const showModal = () => {
-      visible.value = true;
-    }
-      const handleOk = e => {
-        console.log(e);
-        visible.value = false;
-      };
-
-    const formState = reactive({
-      user: '',
-      password: '',
-    });
-
-    const handleFinish = values => {
-      console.log(values, formState);
-    };
-
-    const handleFinishFailed = errors => {
-      console.log(errors);
-    };
-
-    return {
-      buttonWidth: ref(70),
-      visible,
-      showModal,
-      handleOk,
-      formState,
-      handleFinish,
-      handleFinishFailed,
-    };
-  }
 });
 </script>
 
@@ -138,9 +104,9 @@ export default defineComponent({
 
 .boxing {
   font-size: medium;
-  text-align: justify;
-  -moz-text-align-last: justify;
-  text-align-last: justify;
+  text-align: right;
+  -moz-text-align-last: right;
+  text-align-last: right;
 }
 #components-layout-demo-side .logo {
   height: 16px;
@@ -174,4 +140,14 @@ a {
   color: black;
 }
 
+.title {
+  border-radius: 50px;
+  background: #edf0f2;
+  box-shadow:  5px 5px 10px #b4b6b8,
+  -5px -5px 10px #ffffff;;
+}
+
+.sidepanel {
+  font-family: 'Open Sans',serif;
+}
 </style>
