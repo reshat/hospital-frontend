@@ -29,7 +29,6 @@
               <strong style = " margin-right: 12px ">Часы приема: </strong>
               <a-popover placement="bottom">
                 <template #content>
-                  <a-alert :message="`You selected date: ${selectedValue && selectedValue.format('YYYY-MM-DD')}`" />
                   <div :style="{ width: '300px', border: '1px solid #d9d9d9', borderRadius: '4px' }">
                     <a-calendar :value="date" @select="onSelect" @panelChange="onPanelChange" :fullscreen="false" />
                   </div>
@@ -38,133 +37,207 @@
                 <a-button>Выбор даты </a-button>
               </a-popover>
 
+              <a-alert v-if = "this.error === ''"  style = "display: inline-block; margin-left: 12px" :message="`You are selected on: ${selectedValue && selectedValue.format('YYYY-MM-DD')} and ${this.date}`" />
+              <a-alert v-else-if= "this.error === null"  style = "display: inline-block; margin-left: 12px" :message="'Select your date and time! '" />
+              <a-alert v-else-if = "this.error === 'Reached maximum number of appointments'"  style = "display: inline-block; margin-left: 12px" :message="'Вы можете записаться только 2 раза! '" />
+              <a-alert v-else style = "display: inline-block; margin-left: 12px" :message="`${this.error}`" />
+
             </div>
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(8) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 8)">
-                    8.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                    8.00
-                  </a-button>
-                </div>
-                <div style="display: inline-block;">
-                    <a-button v-if = "check(9) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 9)">
-                      9.00
-                    </a-button>
-                    <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                      9.00
-                    </a-button>
-                  </div>
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(10) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 10)">
-                    10.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                    10.00
-                  </a-button>
-                  </div>
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(8) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 8)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >8.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                8.00
+              </a-button>
+            </div>
 
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(11) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 11)">
-                    11.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                    11.00
-                  </a-button>
-                </div>
-
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(12) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 12)">
-                    12.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                    12.00
-                  </a-button>
-                </div>
-
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(13) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 13)">
-                    13.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" >
-                    13.00
-                  </a-button>
-                </div>
-
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(14) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 14)">
-                    14.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                    14.00
-                  </a-button>
-                </div>
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(9) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 9)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >9.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                9.00
+              </a-button>
+            </div>
 
 
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(10) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 10)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >10.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                10.00
+              </a-button>
+            </div>
 
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(15) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 15)">
-                    15.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                    15.00
-                  </a-button>
-                </div>
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(11) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 11)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >11.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                11.00
+              </a-button>
+            </div>
 
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(16) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 16)">
-                    16.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                    16.00
-                  </a-button>
-                </div>
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(12) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 12)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >12.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                12.00
+              </a-button>
+            </div>
 
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(17) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 17)">
-                    17.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                    17.00
-                  </a-button>
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(13) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 13)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >13.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                13.00
+              </a-button>
+            </div>
 
-                </div>
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(14) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 14)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >14.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                14.00
+              </a-button>
+            </div>
 
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(18) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 18)">
-                    18.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                    18.00
-                  </a-button>
-                  <a-modal  v-model:visible="visible"  @ok = "sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 18)" >
-                    <p>Вы хотите записаться в 18.00?</p>
-                  </a-modal>
-                </div>
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(15) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 15)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >15.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                15.00
+              </a-button>
+            </div>
 
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(19) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 19)">
-                    19.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                    19.00
-                  </a-button>
-                  <a-modal  v-model:visible="visible"  @ok = "sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 19)" >
-                    <p>Вы хотите записаться в 19.00?</p>
-                  </a-modal>
-                </div>
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(16) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 16)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >16.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                16.00
+              </a-button>
+            </div>
 
-                <div style="display: inline-block;">
-                  <a-button v-if = "check(20) === true" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" @click="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 20)">
-                    20.00
-                  </a-button>
-                  <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default" @click="showModal">
-                    20.00
-                  </a-button>
-                  <a-modal v-model:visible="visible"  @ok = "sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 20)" >
-                    <p>Вы хотите записаться в 20.00?</p>
-                  </a-modal>
-                </div>
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(17) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 17)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >17.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                17.00
+              </a-button>
+            </div>
+
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(18) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 18)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >18.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                18.00
+              </a-button>
+            </div>
+
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(19) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 19)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >19.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                19.00
+              </a-button>
+            </div>
+
+            <div style="display: inline-block;">
+              <a-popconfirm
+                  v-if = "check(20) === true"
+                  title="Вы уверены, что хотите записаться в это время??"
+                  ok-text="Да"
+                  cancel-text="Нет"
+                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 20)"
+              >
+                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >20.00</a-button>
+              </a-popconfirm>
+              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                20.00
+              </a-button>
+            </div>
           </a-card>
         </div>
       </a-layout-content>
@@ -201,7 +274,9 @@ export default defineComponent({
       selectedKeys: ref(['1']),
       doctor: null,
       clickedButton: false,
-      error: ''
+      error: null,
+      time: null,
+      pressedButton: true
     };
   },
   created() {
@@ -217,28 +292,29 @@ export default defineComponent({
       var postdata = new URLSearchParams();
 
       postdata.append('doctor_id', this.doctor.id);
-      postdata.append('patient_id', this.userData.id);
+      postdata.append('patient_id', localStorage.getItem('userId'));
       postdata.append('date_of_receipt', date);
       postdata.append('time_of_receipt', time + ':00:00');
-
-      console.log(this.doctor.id)
-      console.log(this.userData.id)
 
       console.log(date);
       console.log(time + ':00:00')
       axios
           .post('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/makeAnAppointment',
               postdata, {
-            auth: this.authorizationBasic
+            auth: {
+              username: localStorage.getItem('loginData'),
+              password: localStorage.getItem('passwordData')
+            }
               })
           .then(response => {
             console.log(response.data)
+            this.error = '';
           })
           .catch(error => {
             this.error = error.response.data;
-            console.log(error.response.data)
           })
 
+      this.pressedButton = false;
     },
     check: function (i){
       let a = false;
@@ -246,6 +322,7 @@ export default defineComponent({
         if(this.info[j].timeOfReceipt.localeCompare((i.toString() + ':00:00')) === 0)
         {
           a = true;
+          this.time = a;
         }
       }
       return a;
