@@ -1,17 +1,15 @@
 <template>
   <a-layout class = "sidepanel" style="min-height: 100vh; background: white">
     <SidePanel :role="this.role"></SidePanel>
-    <a-layout>
-      <Header @update = "updateRole" style="margin-left: 12px"></Header>
-      <a-layout-content style="margin: 0 16px">
-        <a-breadcrumb class = "title" style="margin: 16px 0">
-          <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify; font-family: Eras Bold ITC,serif"> {{info.header}}</a-breadcrumb-item>
-        </a-breadcrumb>
+    <a-layout class="backimage">
+      <Header @update = "updateRole" style=""></Header>
+      <a-layout-content style="margin: 0px">
         <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '90%'}">
+          <p style="font-size: large; font-weight:bold; text-align: center; font-family: Eras Bold ITC,serif"> {{info.header}}</p>
           <span>  {{info.text}} </span>
         </div>
       </a-layout-content>
-      <a-layout-footer style="text-align: center">
+      <a-layout-footer class="underheader" style="text-align: center">
         Санкт-Петербург, 2021
       </a-layout-footer>
     </a-layout>
@@ -74,15 +72,19 @@ export default defineComponent({
 });
 </script>
 
-<style>
-.boxing {
-  font-size: medium;
-  text-align: right;
-  -moz-text-align-last: right;
-  text-align-last: right;
+<style scoped>
+.backimage {
+  background-image: url(../assets/background.jpg);
+  background-size: 700px;
 }
-.title {
-  border-radius: 50px;
+.boxing {
+  font-family: 'Open Sans',serif;
+  margin: 24px;
+  font-size: medium;
+  text-align: center;
+  -moz-text-align-last: center;
+  text-align-last: center;
+  border-radius: 20px;
   background: #edf0f2;
   box-shadow:  5px 5px 10px #b4b6b8,
   -5px -5px 10px #ffffff;
@@ -90,10 +92,20 @@ export default defineComponent({
 
 .sidepanel {
   font-family: 'Open Sans',serif;
+  font-size: 14px;
+}
+
+.underheader {
+  margin:24px;
+  border-radius: 20px;
+  background: #e8ebed;
+  box-shadow:  5px 5px 10px #b4b6b8,
+  -5px -5px 10px #ffffff;
 }
 </style>
 
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+
 
