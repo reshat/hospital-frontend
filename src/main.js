@@ -1,4 +1,12 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import Antd from 'ant-design-vue';
+import App from './App';
+import 'ant-design-vue/dist/antd.css';
+import router from './router'
 
-createApp(App).mount('#app')
+createApp(App).use(router).use(Antd).mount('#app')
+
+window.authorizationBasic = null;
+window.userData = null;
+
+console.log(window.authorizationBasic)
