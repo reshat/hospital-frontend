@@ -15,11 +15,17 @@
       <div v-show=" (this.role === 'PATIENT')">
         <a-menu-item key="3">
           <CalendarOutlined />
-          <span> <router-link to="/patientsAppoints"> Смотреть записи </router-link>    </span>
+          <span> <router-link to="/patientsAppoints"> Мои приемы </router-link>    </span>
+        </a-menu-item>
+      </div>
+      <div v-show=" (this.role === 'PATIENT')">
+        <a-menu-item key="4">
+          <BookOutlined />
+          <span> <router-link to="/patientsComments"> Мои комментарии </router-link>    </span>
         </a-menu-item>
       </div>
       <div v-show="this.role === 'DOCTOR'">
-        <a-menu-item key="4">
+        <a-menu-item key="5">
           <CheckSquareOutlined />
           <span> <router-link to="/doctorAppoint"> Сделать записи </router-link>    </span>
         </a-menu-item>
@@ -34,6 +40,7 @@ import {
   TeamOutlined,
   CalendarOutlined,
   CheckSquareOutlined,
+  BookOutlined,
 } from '@ant-design/icons-vue';
 export default {
   components: {
@@ -41,6 +48,7 @@ export default {
     TeamOutlined,
     CalendarOutlined,
     CheckSquareOutlined,
+    BookOutlined,
   },
   name: "SidePanel",
   props: {

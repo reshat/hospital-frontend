@@ -186,8 +186,7 @@ export default {
       this.authorizationBasic = undefined;
       this.userData = undefined;
       localStorage.clear();
-      window.location.reload();
-      console.log(this.authorizationBasic);
+      router.push('/');
     },
   },
 

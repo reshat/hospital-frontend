@@ -5,13 +5,21 @@
      <Header @update = "updateRole" style=""></Header>
       <a-layout-content>
         <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '90%'}">
-          <p style="margin: 12px;text-align: center;-moz-text-align-last: center; text-align-last: center;"><strong>Мои приемы</strong></p>
-          <a-card class="сard" style="margin: 24px; width: 45%; display: inline-block;" v-for="appoint in info" :key="appoint">
-            <div style="margin-left: 12px; margin-right: 12px">
-              <p>Прием №{{info.indexOf(appoint) + 1}}</p>
-              <p >  Доктор:  <span style="color: #108ee9"> {{appoint.name + ' ' + appoint.surname + ' ' + appoint.patronymic }} </span> </p>
-              <p>  Дата: <span style="color: #108ee9"> {{appoint.date_of_reciept}} </span> </p>
-              <p>  Время: <span style="color: #108ee9"> {{appoint.time_of_reciept}} </span> </p>
+          <p style="margin: 12px;text-align: center;-moz-text-align-last: center; text-align-last: center;"><strong>Комментарии врачей</strong></p>
+          <a-card class="сard" style="display: inline-block;margin: 12px; width: 45%;" v-for="appoint in info" :key="appoint">
+            <div style="display: inline-block;margin-left: 12px; margin-right: 12px">
+              <div style="display: inline-block; margin-right: 12px">
+                <span > <small> Доктор:  <span style="color: #108ee9"> {{appoint.name + ' ' + appoint.surname + ' ' + appoint.patronymic }} </span> </small></span>
+              </div>
+              <div style="display: inline-block; margin-left: 12px; margin-right: 12px">
+                <span> <small> Дата: <span style="color: #108ee9"> {{appoint.dateOfReceipt}} </span> </small></span>
+              </div>
+            </div>
+            <div style="margin: 12px;">
+              <p> <small> Запись: </small> </p>
+              <a-card class="сard" style="width: 95%;">
+                <p style = "text-align-all: left; text-align: right; -moz-text-align-last: left; text-align-last: left;"> <small> {{appoint.record}}</small> </p>
+              </a-card>
             </div>
           </a-card>
         </div>
@@ -33,6 +41,14 @@ import Header from "@/components/Header";
 
 
 export default defineComponent({
+  computed: {
+    axiosParams() {
+      const params = new URLSearchParams();
+      params.append('username', localStorage.getItem('loginData'));
+      params.append('password', localStorage.getItem('passwordData'));
+      return params;
+    }
+  },
   components: {
     SidePanel,
     Header
@@ -53,7 +69,7 @@ export default defineComponent({
       },
     getAppoint: function (){
       return  axios
-          .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/appointmentInfo?id=' + localStorage.getItem('userId'), {auth: {
+          .get('http://ec2-3-120-138-66.eu-central-1.compute.amazonaws.com:8080/viewRecords?id=' + localStorage.getItem('userId'), {auth: {
               username: localStorage.getItem('loginData'),
               password: localStorage.getItem('passwordData')
             }})

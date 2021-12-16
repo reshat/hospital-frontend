@@ -3,7 +3,7 @@
     <SidePanel :role="this.role"></SidePanel>
     <a-layout class="backimage">
       <Header @update = "updateRole" style=""></Header>
-      <a-layout-content style="margin: 0px">
+      <a-layout-content >
         <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '90%'}">
           <p style="font-size: large; font-weight:bold; text-align: center; font-family: Eras Bold ITC,serif"> {{info.header}}</p>
           <span>  {{info.text}} </span>

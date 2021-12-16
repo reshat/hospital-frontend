@@ -1,14 +1,14 @@
 <template>
-  <a-layout style="min-height: 100vh; background: white">
+  <a-layout class="sidepanel" style="min-height: 100vh; background: white">
     <SidePanel :role="this.role"></SidePanel>
-    <a-layout>
-      <Header style="margin-left: 12px"></Header>
+    <a-layout class="backimage">
+      <Header style=""></Header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
           <a-breadcrumb-item style="font-size: large; font-weight:bold; text-align: justify "> </a-breadcrumb-item>
         </a-breadcrumb>
         <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px', textJustify: justify}">
-          <a-card style="width: 70%; margin: 12px;" >
+          <a-card class="card" style="width: 70%; margin: 12px;" >
             <div style="display: inline-block; padding: 10px;">
               <a-avatar  :size ="128">
                 <UserOutlined />
@@ -24,23 +24,23 @@
             </div>
           </a-card>
 
-          <a-card style="width: 70%; margin: 12px;" >
+          <a-card class="card" style="width: 70%; margin: 12px;" >
             <div style="margin: 12px; text-align: left;-moz-text-align-last: left; text-align-last: left;">
               <strong style = " margin-right: 12px ">Часы приема: </strong>
-              <a-popover placement="bottom">
-                <template #content>
-                  <div :style="{ width: '300px', border: '1px solid #d9d9d9', borderRadius: '4px' }">
+              <a-popover class="card" placement="bottom">
+                <template class="card" #content>
+                  <div class="card" :style="{ width: '300px', border: '1px solid #d9d9d9', borderRadius: '4px' }">
                     <a-calendar :value="date" @select="onSelect" @panelChange="onPanelChange" :fullscreen="false" />
                   </div>
-                  <a-button style ="margin: 12px" @click = "showTime(selectedValue && selectedValue.format('YYYY-MM-DD'))">Выбрать</a-button>
+                  <a-button class="card" style ="margin: 12px" @click = "showTime(selectedValue && selectedValue.format('YYYY-MM-DD'))">Выбрать</a-button>
                 </template>
-                <a-button>Выбор даты </a-button>
+                <a-button class="card">Выбор даты </a-button>
               </a-popover>
 
-              <a-alert v-if = "this.error === ''"  style = "display: inline-block; margin-left: 12px" :message="`You are selected on: ${selectedValue && selectedValue.format('YYYY-MM-DD')} and ${this.date}`" />
-              <a-alert v-else-if= "this.error === null"  style = "display: inline-block; margin-left: 12px" :message="'Select your date and time! '" />
-              <a-alert v-else-if = "this.error === 'Reached maximum number of appointments'"  style = "display: inline-block; margin-left: 12px" :message="'Вы можете записаться только 2 раза! '" />
-              <a-alert v-else style = "display: inline-block; margin-left: 12px" :message="`${this.error}`" />
+              <a-alert class="card" v-if = "this.error === ''"  style = "display: inline-block; margin-left: 12px" :message="`Вы выбрали: ${selectedValue && selectedValue.format('YYYY-MM-DD')} and ${this.date}`" />
+              <a-alert class="card" v-else-if= "this.error === null"  style = "display: inline-block; margin-left: 12px" :message="'Выберете дату и время! '" />
+              <a-alert class="card" v-else-if = "this.error === 'Reached maximum number of appointments'"  style = "display: inline-block; margin-left: 12px; background-color: pink" :message="'Вы можете записаться только 2 раза! '" />
+              <a-alert class="card" v-else style = "display: inline-block; margin-left: 12px; background-color: pink" :message="`${this.error}`" />
 
             </div>
             <div style="display: inline-block;">
@@ -51,9 +51,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 8)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >8.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >8.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 8.00
               </a-button>
             </div>
@@ -66,9 +66,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 9)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >9.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >9.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 9.00
               </a-button>
             </div>
@@ -82,9 +82,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 10)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >10.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >10.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 10.00
               </a-button>
             </div>
@@ -97,9 +97,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 11)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >11.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >11.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 11.00
               </a-button>
             </div>
@@ -112,9 +112,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 12)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >12.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >12.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 12.00
               </a-button>
             </div>
@@ -127,9 +127,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 13)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >13.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >13.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 13.00
               </a-button>
             </div>
@@ -142,9 +142,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 14)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >14.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >14.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 14.00
               </a-button>
             </div>
@@ -157,9 +157,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 15)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >15.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >15.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 15.00
               </a-button>
             </div>
@@ -172,9 +172,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 16)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >16.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >16.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 16.00
               </a-button>
             </div>
@@ -187,9 +187,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 17)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >17.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >17.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 17.00
               </a-button>
             </div>
@@ -202,9 +202,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 18)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >18.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >18.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 18.00
               </a-button>
             </div>
@@ -217,9 +217,9 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 19)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >19.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >19.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 19.00
               </a-button>
             </div>
@@ -232,16 +232,16 @@
                   cancel-text="Нет"
                   @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 20)"
               >
-                <a-button style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >20.00</a-button>
+                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >20.00</a-button>
               </a-popconfirm>
-              <a-button v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
                 20.00
               </a-button>
             </div>
           </a-card>
         </div>
       </a-layout-content>
-      <a-layout-footer style="text-align: center">
+      <a-layout-footer class="underheader" style="text-align: center">
         Санкт-Петербург, 2021
       </a-layout-footer>
     </a-layout>
@@ -387,9 +387,9 @@ export default defineComponent({
   font-family: 'Open Sans',serif;
   margin: 24px;
   font-size: medium;
-  text-align: center;
-  -moz-text-align-last: center;
-  text-align-last: center;
+  text-align: left;
+  -moz-text-align-last: left;
+  text-align-last: left;
   border-radius: 20px;
   background: #edf0f2;
   box-shadow:  5px 5px 10px #b4b6b8,
@@ -404,7 +404,13 @@ export default defineComponent({
 .underheader {
   margin:24px;
   border-radius: 20px;
-  background: #e8ebed;;
+  background: #e8ebed;
+  box-shadow:  5px 5px 10px #b4b6b8,
+  -5px -5px 10px #ffffff;
+}
+
+.card {
+  border-radius: 20px;
   box-shadow:  5px 5px 10px #b4b6b8,
   -5px -5px 10px #ffffff;
 }

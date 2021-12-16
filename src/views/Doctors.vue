@@ -2,14 +2,12 @@
 <a-layout class="sidepanel" style="min-height: 100vh; background: white">
   <SidePanel :role="this.role"></SidePanel>
     <a-layout class="backimage">
-      <Header @update = "updateRole" ></Header>
-      <a-layout-content style="margin: 0 16px">
+      <Header @update = "updateRole" style=""></Header>
+      <a-layout-content>
           <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px'}">
-            <p style="font-size: large; font-weight:bold;text-align: center;
-  -moz-text-align-last: center;
-  text-align-last: center; "> Список докторов </p>
+            <p style="font-size: large; font-weight:bold;text-align: center; -moz-text-align-last: center; text-align-last: center; "> Список докторов </p>
 
-            <a-card style="width: 500px; margin: 2px ; display: inline-block" v-for="post in info" :key="post.id" >
+            <a-card class="сard" style="width: 40%; margin: 12px ; display: inline-block" v-for="post in info" :key="post.id" >
                 <div style="display: inline-flex">
                   <a-avatar  :size="128">
                     <UserOutlined />
@@ -96,9 +94,9 @@ export default defineComponent({
   font-family: 'Open Sans',serif;
   margin: 24px;
   font-size: medium;
-  text-align: center;
-  -moz-text-align-last: center;
-  text-align-last: center;
+  text-align: left;
+  -moz-text-align-last: left;
+  text-align-last: left;
   border-radius: 20px;
   background: #edf0f2;
   box-shadow:  5px 5px 10px #b4b6b8,
@@ -113,7 +111,14 @@ export default defineComponent({
 .underheader {
   margin:24px;
   border-radius: 20px;
-  background: #e8ebed;;
+  background: #e8ebed;
+  box-shadow:  5px 5px 10px #b4b6b8,
+  -5px -5px 10px #ffffff;
+}
+
+.сard {
+  border-radius: 20px;
+  background-color: white;
   box-shadow:  5px 5px 10px #b4b6b8,
   -5px -5px 10px #ffffff;
 }
