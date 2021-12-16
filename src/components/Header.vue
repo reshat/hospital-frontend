@@ -1,6 +1,6 @@
 <template>
-  <a-layout-header class="background" style="background: #fff; padding: 0;" >
-    <div id="components-popover-demo-placement" style="float: right; margin: 2px" >
+  <a-layout-header class="background" style="background-color: #e8ebed;; padding: 0;" >
+    <div id="components-popover-demo-placement" style="float: right; " >
       <div :style="{ clear: 'both', whiteSpace: 'nowrap' }">
         <a-popover placement="bottomRight" class="popover" >
           <template #content >
@@ -87,7 +87,6 @@ export default {
         password: localStorage.getItem('passwordData')
       }
     }
-    console.log(this.authorizationBasic);
     if(localStorage.getItem('userId')){
       this.userData = {
         email:localStorage.getItem('userEmail'),
@@ -187,8 +186,7 @@ export default {
       this.authorizationBasic = undefined;
       this.userData = undefined;
       localStorage.clear();
-      window.location.reload();
-      console.log(this.authorizationBasic);
+      router.push('/');
     },
   },
 
@@ -231,6 +229,10 @@ export default {
 
 <style scoped>
 .background {
+  margin-top: 24px;
+  margin-right: 24px;
+  margin-left: 24px;
+
   border-radius: 20px;
   background: #e3e8ed;
   box-shadow:  5px 5px 10px #adb0b4,
@@ -238,6 +240,7 @@ export default {
 }
 
 .popover {
+  margin-right: 16px;
   border-radius: 63px;
   background: #edf0f2;
   box-shadow:  5px 5px 7px #c7cacb,

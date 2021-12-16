@@ -5,6 +5,7 @@ import Appoint from "@/views/Appoint";
 import PatientAppoints from "@/views/PatientAppoints";
 import DoctorAppoint from "@/views/DoctorAppoint";
 import register from "@/views/register";
+import PatientComments from "@/views/PatientComments";
 
 const routes = [
   {
@@ -18,6 +19,10 @@ const routes = [
   {
     path: '/patientsAppoints',
     component: PatientAppoints
+  },
+  {
+    path: '/patientsComments',
+    component: PatientComments
   },
   {
     path: '/appoint',

@@ -1,34 +1,33 @@
 <template>
-<a-layout style="min-height: 100vh; background: white">
+<a-layout class="sidepanel" style="min-height: 100vh; background: white">
   <SidePanel :role="this.role"></SidePanel>
-<a-layout>
-  <Header @update = "updateRole" style="margin-left: 12px"></Header>
-  <a-layout-content style="margin: 0 16px">
-    <a-breadcrumb style="margin: 16px 0">
-      <a-breadcrumb-item style="font-size: large; font-weight:bold "> Список докторов </a-breadcrumb-item>
-    </a-breadcrumb>
-      <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px'}">
-          <a-card style="width: 500px; margin: 2px ; display: inline-block" v-for="post in info" :key="post.id" >
-            <div style="display: inline-flex">
-              <a-avatar  :size="128">
-                <UserOutlined />
-              </a-avatar>
-            </div>
-            <div style="display: inline-block; margin-left: 12px">
-              <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.surname + ' ' + post.name + ' ' + post.patronymic}}</p>
-              <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.specialization}}</p>
-              <p style="margin: 12px; display: flex; align-items: flex-start"> Опыт работы(в годах): {{post.work_experiences}}</p>
-              <div v-show="this.role == 'PATIENT'"><p><a-button @click = "takeDoctorData(post.id,post.surname + ' ' + post.name + ' ' + post.patronymic, post.specialization, post.work_experiences )" type="link" >Записаться на прием</a-button></p></div>
-            </div>
+    <a-layout class="backimage">
+      <Header @update = "updateRole" style=""></Header>
+      <a-layout-content>
+          <div class="boxing" :style="{ padding: '24px', background: '#fff', minHeight: '360px'}">
+            <p style="font-size: large; font-weight:bold;text-align: center; -moz-text-align-last: center; text-align-last: center; "> Список докторов </p>
+
+            <a-card class="сard" style="width: 40%; margin: 12px ; display: inline-block" v-for="post in info" :key="post.id" >
+                <div style="display: inline-flex">
+                  <a-avatar  :size="128">
+                    <UserOutlined />
+                  </a-avatar>
+                </div>
+                <div style="display: inline-block; margin-left: 12px">
+                  <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.surname + ' ' + post.name + ' ' + post.patronymic}}</p>
+                  <p style="margin: 12px; display: flex; align-items: flex-start"> {{post.specialization}}</p>
+                  <p style="margin: 12px; display: flex; align-items: flex-start"> Опыт работы(в годах): {{post.work_experiences}}</p>
+                  <div v-show="this.role == 'PATIENT'"><p><a-button @click = "takeDoctorData(post.id,post.surname + ' ' + post.name + ' ' + post.patronymic, post.specialization, post.work_experiences )" type="link" >Записаться на прием</a-button></p></div>
+                </div>
 
 
-          </a-card>
-      </div>
-  </a-layout-content>
-  <a-layout-footer style="text-align: center">
-    Санкт-Петербург, 2021
-  </a-layout-footer>
-</a-layout>
+              </a-card>
+          </div>
+      </a-layout-content>
+      <a-layout-footer class="underheader" style="text-align: center">
+        Санкт-Петербург, 2021
+      </a-layout-footer>
+    </a-layout>
 </a-layout>
 </template>
 
@@ -86,41 +85,43 @@ export default defineComponent({
 });
 </script>
 
-<style>
-
-#components-layout-demo-side .logo {
-  height: 16px;
-  margin: 16px;
-  background: rgba(255, 255, 255, 255.3);
-}
-
-.site-layout .site-layout-background {
-  background: #fff;
-}
-[data-theme='dark'] .site-layout .site-layout-background {
-  background: #141414;
-}
-</style>
-
-
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 0px 0 0;
+.backimage {
+  background-image: url(../assets/background.jpg);
+  background-size: 700px;
+}
+.boxing {
+  font-family: 'Open Sans',serif;
+  margin: 24px;
+  font-size: medium;
+  text-align: left;
+  -moz-text-align-last: left;
+  text-align-last: left;
+  border-radius: 20px;
+  background: #edf0f2;
+  box-shadow:  5px 5px 10px #b4b6b8,
+  -5px -5px 10px #ffffff;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.sidepanel {
+  font-family: 'Open Sans',serif;
+  font-size: 14px;
 }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
+.underheader {
+  margin:24px;
+  border-radius: 20px;
+  background: #e8ebed;
+  box-shadow:  5px 5px 10px #b4b6b8,
+  -5px -5px 10px #ffffff;
 }
 
-a {
-  color: black;
+.сard {
+  border-radius: 20px;
+  background-color: white;
+  box-shadow:  5px 5px 10px #b4b6b8,
+  -5px -5px 10px #ffffff;
 }
 </style>
+
+
