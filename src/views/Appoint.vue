@@ -42,203 +42,21 @@
 
 
             </div>
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(8) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 8)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >8.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                8.00
-              </a-button>
+            <div v-for="item in this.times" v-bind:key="item" style="display: inline-block;" >
+                <a-popconfirm
+                    v-if = "check(item) === true"
+                    title="Вы уверены, что хотите записаться в это время??"
+                    ok-text="Да"
+                    cancel-text="Нет"
+                    @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), item)">
+                  <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >{{item}}.00</a-button>
+                </a-popconfirm>
+                <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
+                  {{item}}.00
+                </a-button>
             </div>
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(9) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 9)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >9.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                9.00
-              </a-button>
-            </div>
-
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(10) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 10)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >10.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                10.00
-              </a-button>
-            </div>
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(11) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 11)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >11.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                11.00
-              </a-button>
-            </div>
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(12) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 12)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >12.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                12.00
-              </a-button>
-            </div>
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(13) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 13)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >13.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                13.00
-              </a-button>
-            </div>
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(14) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 14)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >14.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                14.00
-              </a-button>
-            </div>
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(15) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 15)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >15.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                15.00
-              </a-button>
-            </div>
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(16) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 16)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >16.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                16.00
-              </a-button>
-            </div>
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(17) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 17)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >17.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                17.00
-              </a-button>
-            </div>
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(18) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 18)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >18.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                18.00
-              </a-button>
-            </div>
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(19) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 19)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >19.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                19.00
-              </a-button>
-            </div>
-
-            <div style="display: inline-block;">
-              <a-popconfirm
-                  v-if = "check(20) === true"
-                  title="Вы уверены, что хотите записаться в это время??"
-                  ok-text="Да"
-                  cancel-text="Нет"
-                  @confirm="sendAppoint(selectedValue && selectedValue.format('YYYY-MM-DD'), 20)"
-              >
-                <a-button class="card" style = "margin:12px; display: inline-block; width: 100px;height: 80px; background-color: aquamarine" type="default" >20.00</a-button>
-              </a-popconfirm>
-              <a-button class="card" v-else  style = "margin:12px; display: inline-block; width: 100px; height: 80px; background-color: gray" disabled type="default">
-                20.00
-              </a-button>
-            </div>
-            <div style="display: inline-block; margin: 12px">
-            <a-alert class="card" v-if = "this.error === ''"  style = "display: inline-block; margin-left: 12px" :message="`Вы выбрали: ${selectedValue && selectedValue.format('YYYY-MM-DD')} в ${this.selectedTime}`" />
+            <div style=" margin: 12px">
+            <a-alert class="card" v-if = "this.error === ''"  style = "display: inline-block; margin-left: 12px" :message="`Прием будет: ${selectedValue && selectedValue.format('YYYY-MM-DD')} в ${this.selectedTime}`" />
             <a-alert class="card" v-else-if= "this.error === null"  style = "display: inline-block; margin-left: 12px" :message="'Запись на прием не произведен! '" />
             <a-alert class="card" v-else-if = "this.error === 'Reached maximum number of appointments'"  style = "display: inline-block; margin-left: 12px; background-color: pink" :message="'Вы можете записаться только 2 раза! '" />
             <a-alert class="card" v-else style = "display: inline-block; margin-left: 12px; background-color: pink" :message="`${this.error}`" />
@@ -281,8 +99,9 @@ export default defineComponent({
       clickedButton: false,
       error: null,
       time: null,
-      selectedTime: null,
-      pressedButton: true
+      pressedButton: true,
+      times: [8,9,10,11,12,13,14,15,16,17,18,19,20],
+      selectedTime: null
     };
   },
   created() {
@@ -316,6 +135,7 @@ export default defineComponent({
             console.log(response.data)
             this.error = '';
             this.selectedTime = time + ':00:00'
+            this.getInfo(date);
           })
           .catch(error => {
             this.error = error.response.data;
