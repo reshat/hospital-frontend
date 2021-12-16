@@ -37,10 +37,9 @@
                 <a-button class="card">Выбор даты </a-button>
               </a-popover>
 
-              <a-alert class="card" v-if = "this.error === ''"  style = "display: inline-block; margin-left: 12px" :message="`Вы выбрали: ${selectedValue && selectedValue.format('YYYY-MM-DD')} and ${this.date}`" />
-              <a-alert class="card" v-else-if= "this.error === null"  style = "display: inline-block; margin-left: 12px" :message="'Выберете дату и время! '" />
-              <a-alert class="card" v-else-if = "this.error === 'Reached maximum number of appointments'"  style = "display: inline-block; margin-left: 12px; background-color: pink" :message="'Вы можете записаться только 2 раза! '" />
-              <a-alert class="card" v-else style = "display: inline-block; margin-left: 12px; background-color: pink" :message="`${this.error}`" />
+              <a-alert class="card" v-if= "(selectedValue && selectedValue.format('YYYY-MM-DD')) === undefined"  style = "display: inline-block; margin-left: 12px" :message="'Дата не выбрана '" />
+              <a-alert class="card" v-else style = "display: inline-block; margin-left: 12px" :message="`Вы выбрали: ${selectedValue && selectedValue.format('YYYY-MM-DD')}`" />
+
 
             </div>
             <div style="display: inline-block;">
@@ -238,6 +237,12 @@
                 20.00
               </a-button>
             </div>
+            <div style="display: inline-block; margin: 12px">
+            <a-alert class="card" v-if = "this.error === ''"  style = "display: inline-block; margin-left: 12px" :message="`Вы выбрали: ${selectedValue && selectedValue.format('YYYY-MM-DD')} в ${this.selectedTime}`" />
+            <a-alert class="card" v-else-if= "this.error === null"  style = "display: inline-block; margin-left: 12px" :message="'Запись на прием не произведен! '" />
+            <a-alert class="card" v-else-if = "this.error === 'Reached maximum number of appointments'"  style = "display: inline-block; margin-left: 12px; background-color: pink" :message="'Вы можете записаться только 2 раза! '" />
+            <a-alert class="card" v-else style = "display: inline-block; margin-left: 12px; background-color: pink" :message="`${this.error}`" />
+            </div>
           </a-card>
         </div>
       </a-layout-content>
@@ -276,6 +281,7 @@ export default defineComponent({
       clickedButton: false,
       error: null,
       time: null,
+      selectedTime: null,
       pressedButton: true
     };
   },
@@ -309,6 +315,7 @@ export default defineComponent({
           .then(response => {
             console.log(response.data)
             this.error = '';
+            this.selectedTime = time + ':00:00'
           })
           .catch(error => {
             this.error = error.response.data;

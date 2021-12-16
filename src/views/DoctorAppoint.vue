@@ -40,12 +40,12 @@
                   @finishFailed="handleFinishFailed"
               >
                 <p style = "margin: 12px 12px;">Запись: </p>
-                  <a-textarea  v-model:value="formState.record" placeholder="Коментарии врача" style = "margin: 0px 12px; width: 95%; height: 220px">
+                  <a-textarea  v-model:value="formState.record" placeholder="Коментарий врача" style = "margin: 0px 12px; width: 95%; height: 220px">
                     <template #prefix><UserOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
                   </a-textarea>
                 <div style="margin: 12px;">
                   <a-button class="card"  @click = "sendComment(formState.record)">Отправить комментарий</a-button>
-                  <a-alert class="card" v-if = "this.sended === 'sended'"  style = "display: inline-block; margin-left: 12px" :message="`Комментарии отправлен!`" />
+                  <a-alert class="card" v-if = "this.sended === 'sended'"  style = "display: inline-block; margin-left: 12px" :message="`Комментарий отправлен!`" />
                 </div>
               </a-form>
             </a-card>
